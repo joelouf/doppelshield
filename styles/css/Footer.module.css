@@ -1,0 +1,119 @@
+.footer {
+  position: sticky;
+  background-image: linear-gradient(
+    to right,
+    var(--nav-background-color-2),
+    var(--nav-background-color-1)
+  );
+  padding: 30px 0;
+}
+
+.container {
+  margin: 0 6.3rem;
+  padding: 0 20px;
+  color: var(--primary-color);
+}
+
+.footerContent {
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: space-evenly;
+  margin-bottom: 10px;
+  color: var(--primary-color);
+}
+
+.sectionHeader {
+  display: flex-block;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: var(--primary-color);
+}
+
+.sectionHeader h3 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  margin-bottom: 10px;
+  color: var(--primary-color);
+}
+
+.sectionHeader svg {
+  display: block;
+  margin-left: 6px;
+  font-size: 14px;
+  transition: transform 0.4s ease-in-out;
+}
+
+.sectionHeader:hover svg {
+  display: flex;
+  transform: rotate(180deg);
+}
+
+.footerSection {
+  display: inline-block;
+  text-align: center;
+  color: var(--primary-color);
+  flex-basis: 25%;
+  color: var(--primary-color);
+}
+
+.footerSection h3 {
+  display: flex;
+  font-size: 18px;
+  font-weight: bold;
+  color: var(--primary-color);
+}
+
+.footerSection ul {
+  display: block;
+  list-style: none;
+  margin: 10px;
+  color: var(--primary-color);
+}
+
+.footerSection ul li a,
+.footerSection ul li button {
+  display: inline-flex;
+  padding-bottom: 10px;
+  text-decoration: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition: color 0.3s ease;
+  color: var(--primary-color);
+}
+
+.footerSection ul li a:hover,
+.footerSection ul li button:hover {
+  color: var(--accent-color);
+}
+
+.footerBottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 20px;
+  border-top: 1px solid var(--primary-color);
+  color: var(--primary-color);
+}
+
+.footerBottom div {
+  display: block;
+  font-size: 14px;
+  justify-content: space-between;
+  color: var(--primary-color);
+}
+
+.socialIcons a {
+  display: inline-flex;
+  font-size: 22px;
+  margin-left: 40px;
+  transition: color 0.3s ease;
+  color: var(--primary-color);
+}
+
+.socialIcons a:hover {
+  color: var(--accent-color);
+}

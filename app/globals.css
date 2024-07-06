@@ -1,33 +1,66 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss/base";
 
 :root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
-}
+  --default-font-family: var(--font-mulish);
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
-  }
+  --nav-background-color-1: #6a8fab;
+  --nav-background-color-2: #e1e8eb;
+
+  --background-color: #e1e8eb;
+  --backdrop-color: #313131;
+
+  --primary-color: #113354;
+  --accent-color: #17497b;
+
+  --text-color: #ffffff;
+  --hover-text-color: #ffffff;
+
+  --error-color: #e3002d;
+  --hover-error-color: #ff0033;
+
+  --success-color: #4caf50;
+
+  --cancel-background-color: #4b4b4b;
+  --hover-cancel-color: #cccccc;
+
+  --gray-neutral-color: #808080;
+
+  background: var(--background-color);
+  color: var(--text-color);
+
+  scrollbar-color: #888 transparent;
 }
 
 body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+  margin: 0;
+  overflow-x: hidden;
+  font-family: var(--default-font-family);
+  scrollbar-gutter: stable;
 }
 
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
-  }
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: var(--primary-color);
 }
+
+a {
+  color: var(--accent-color);
+  text-decoration: none;
+}
+
+main {
+  min-height: 100vh;
+}
+
+::selection {
+  background-color: var(--accent-color);
+  color: var(--hover-text-color);
+}
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;

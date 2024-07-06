@@ -1,0 +1,46 @@
+.container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-image: linear-gradient(
+    to right,
+    var(--nav-background-color-2),
+    var(--nav-background-color-1)
+  );
+  box-shadow: 0 0 0 rgba(0, 0, 0, 10);
+  padding: 14px 100px;
+}
+
+.tabsContainer {
+  display: flex;
+  align-items: center;
+  gap: 6rem;
+}
+
+.tab {
+  color: var(--primary-color);
+  font-size: 16px;
+  font-weight: bold;
+  text-decoration: none;
+  transition: color 0.1s ease;
+}
+
+.tab:hover {
+  color: var(--accent-color);
+}
+
+.extensionButton {
+  background-color: var(--primary-color);
+  color: var(--text-color);
+  padding: 12px 22px;
+  font-size: 16px;
+  font-weight: bold;
+  text-decoration: none;
+  border-radius: 25px;
+  transition: background-color 0.1s ease;
+}
+
+.extensionButton:hover {
+  color: var(--hover-text-color);
+  background-color: var(--accent-color);
+}
