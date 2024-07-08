@@ -1,65 +1,112 @@
 .container {
-  position: relative;
   display: flex;
-  height: 100%;
-  width: 100%;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0 6.3rem;
-}
-
-.content {
-  flex: 1;
-  margin-right: 2rem;
+  flex-direction: column;
+  min-height: 100vh;
+  padding: 5rem 2rem 4rem 2rem;
+  max-width: 800px;
+  margin: 0 auto;
 }
 
 .header {
-  color: var(--primary-color);
-  font-size: 36px;
   font-weight: bold;
+  text-align: center;
+  margin-bottom: 4rem;
 }
 
-.body {
-  font-size: 20px;
-  margin: 3.5rem 0;
+.header h1 {
+  color: var(--primary-color);
+  font-size: 3rem;
+  margin-bottom: 0.25rem;
+}
+
+.header p {
+  color: var(--accent-color);
+  font-size: 1.2rem;
+}
+
+.main {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.instructions {
+  font-size: 18px;
+  text-align: center;
+  margin-bottom: 1rem;
+  color: var(--primary-color);
+}
+
+.inputGroup {
+  display: flex;
+  margin-bottom: 1rem;
+}
+
+.input {
+  flex-grow: 1;
+  padding: 0.75rem;
+  font-size: 1rem;
+  border: 2px solid var(--primary-color);
+  border-radius: 4px 0 0 4px;
   color: var(--primary-color);
 }
 
 .ctaButton {
-  padding: 12px 22px;
-  font-size: 16px;
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
   font-weight: bold;
-  text-decoration: none;
-  text-wrap: none;
-  border-radius: 25px;
-  transition: background-color 0.1s ease;
+  border: none;
+  border-radius: 0 4px 4px 0;
   background-color: var(--primary-color);
-  color: var(--text-color);
+  color: var(--hover-text-color);
+  cursor: pointer;
+  transition: background-color 0.2s ease;
 }
 
-.ctaButton:hover {
-  color: var(--hover-text-color);
+.ctaButton:hover:not(.disabled) {
   background-color: var(--accent-color);
 }
 
-.image {
-  flex: 1;
-  display: flex;
-  justify-content: flex-end;
+.ctaButton.disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
 }
 
-@media screen and (max-width: 768px) {
-  .container {
+.resultContainer {
+  background-color: #f0f0f0;
+  border-radius: 4px;
+  padding: 1rem;
+  min-height: 100px;
+  display: flex;
+  flex-direction: column;
+}
+
+.resultContainer h2 {
+  font-size: 16px;
+  margin-top: 0;
+  margin-bottom: 0.5rem;
+  color: var(--primary-color);
+}
+
+.result {
+  color: var(--accent-color);
+  font-size: 1.1rem;
+  margin-bottom: 0;
+}
+
+@media screen and (max-width: 600px) {
+  .inputGroup {
     flex-direction: column;
-    padding: 0 2rem;
   }
 
-  .content {
-    margin-right: 0;
-    margin-bottom: 2rem;
+  .input,
+  .ctaButton {
+    width: 100%;
+    border-radius: 4px;
   }
 
-  .image {
-    justify-content: center;
+  .input {
+    margin-bottom: 1rem;
   }
 }

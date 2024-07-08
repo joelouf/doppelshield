@@ -4,11 +4,12 @@
   align-items: center;
   background-image: linear-gradient(
     to right,
-    var(--nav-background-color-2),
-    var(--nav-background-color-1)
+    var(--nav-background-color-3) 8%,
+    var(--nav-background-color-2) 50%,
+    var(--nav-background-color-1) 90%
   );
   box-shadow: 0 0 0 rgba(0, 0, 0, 10);
-  padding: 14px 100px;
+  padding: 15px 35px;
 }
 
 .tabsContainer {
@@ -18,7 +19,7 @@
 }
 
 .tab {
-  color: var(--primary-color);
+  color: var(--hover-text-color);
   font-size: 16px;
   font-weight: bold;
   text-decoration: none;
@@ -26,21 +27,20 @@
 }
 
 .tab:hover {
-  color: var(--accent-color);
+  color: var(--lighter-accent-color);
 }
 
 .extensionButton {
   background-color: var(--primary-color);
-  color: var(--text-color);
+  color: var(--hover-text-color);
   padding: 12px 22px;
   font-size: 16px;
   font-weight: bold;
   text-decoration: none;
   border-radius: 25px;
-  transition: background-color 0.1s ease;
+  transition: background-color 0.3s ease;
 }
 
 .extensionButton:hover {
-  color: var(--hover-text-color);
   background-color: var(--accent-color);
 }

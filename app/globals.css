@@ -3,27 +3,18 @@
 :root {
   --default-font-family: var(--font-mulish);
 
-  --nav-background-color-1: #6a8fab;
-  --nav-background-color-2: #e1e8eb;
+  --nav-background-color-1: #000f1f;
+  --nav-background-color-2: #11638f;
+  --nav-background-color-3: #ffffff;
 
-  --background-color: #e1e8eb;
-  --backdrop-color: #313131;
+  --background-color: #ffffff;
 
-  --primary-color: #113354;
-  --accent-color: #17497b;
+  --primary-color: #005a8c;
+  --accent-color: #bf00ff;
+  --lighter-accent-color: #f9e6ff;
 
-  --text-color: #ffffff;
+  --text-color: #0a2744;
   --hover-text-color: #ffffff;
-
-  --error-color: #e3002d;
-  --hover-error-color: #ff0033;
-
-  --success-color: #4caf50;
-
-  --cancel-background-color: #4b4b4b;
-  --hover-cancel-color: #cccccc;
-
-  --gray-neutral-color: #808080;
 
   background: var(--background-color);
   color: var(--text-color);
@@ -50,10 +41,6 @@ h6 {
 a {
   color: var(--accent-color);
   text-decoration: none;
-}
-
-main {
-  min-height: 100vh;
 }
 
 ::selection {

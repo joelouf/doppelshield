@@ -11,7 +11,7 @@
 .container {
   margin: 0 6.3rem;
   padding: 0 20px;
-  color: var(--primary-color);
+  color: var(--hover-text-color);
 }
 
 .footerContent {
@@ -19,7 +19,7 @@
   flex-wrap: nowrap;
   justify-content: space-evenly;
   margin-bottom: 10px;
-  color: var(--primary-color);
+  color: var(--hover-text-color);
 }
 
 .sectionHeader {
@@ -27,7 +27,7 @@
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  color: var(--primary-color);
+  color: var(--hover-text-color);
 }
 
 .sectionHeader h3 {
@@ -36,7 +36,7 @@
   align-items: center;
   cursor: pointer;
   margin-bottom: 10px;
-  color: var(--primary-color);
+  color: var(--hover-text-color);
 }
 
 .sectionHeader svg {
@@ -54,23 +54,22 @@
 .footerSection {
   display: inline-block;
   text-align: center;
-  color: var(--primary-color);
+  color: var(--hover-text-color);
   flex-basis: 25%;
-  color: var(--primary-color);
 }
 
 .footerSection h3 {
   display: flex;
   font-size: 18px;
   font-weight: bold;
-  color: var(--primary-color);
+  color: var(--hover-text-color);
 }
 
 .footerSection ul {
   display: block;
   list-style: none;
   margin: 10px;
-  color: var(--primary-color);
+  color: var(--hover-text-color);
 }
 
 .footerSection ul li a,
@@ -82,12 +81,12 @@
   border: none;
   cursor: pointer;
   transition: color 0.3s ease;
-  color: var(--primary-color);
+  color: var(--hover-text-color);
 }
 
 .footerSection ul li a:hover,
 .footerSection ul li button:hover {
-  color: var(--accent-color);
+  color: var(--backdrop-color);
 }
 
 .footerBottom {
@@ -95,15 +94,15 @@
   justify-content: space-between;
   align-items: center;
   padding-top: 20px;
-  border-top: 1px solid var(--primary-color);
-  color: var(--primary-color);
+  border-top: 1px solid var(--hover-text-color);
+  color: var(--hover-text-color);
 }
 
 .footerBottom div {
   display: block;
   font-size: 14px;
   justify-content: space-between;
-  color: var(--primary-color);
+  color: var(--hover-text-color);
 }
 
 .socialIcons a {
@@ -111,9 +110,9 @@
   font-size: 22px;
   margin-left: 40px;
   transition: color 0.3s ease;
-  color: var(--primary-color);
+  color: var(--hover-text-color);
 }
 
 .socialIcons a:hover {
-  color: var(--accent-color);
+  color: var(--backdrop-color);
 }

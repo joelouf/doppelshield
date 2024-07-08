@@ -31,27 +31,27 @@ const Footer = () => {
           <div className={footer.footerSection}>
             <div
               className={footer.sectionHeader}
-              onClick={() => toggleSection("company")}
+              onClick={() => toggleSection("about")}
             >
               <h3>
-                Company
-                {openSections.includes("company") ? (
+                About
+                {openSections.includes("about") ? (
                   <FaChevronUp />
                 ) : (
                   <FaChevronDown />
                 )}
               </h3>
             </div>
-            {openSections.includes("company") && (
+            {openSections.includes("about") && (
               <ul>
                 <li>
-                  <Link href='/about'>About</Link>
+                  <Link href='/about'>Our Mission</Link>
                 </li>
                 <li>
-                  <Link href='/careers'>Careers</Link>
+                  <Link href='/team'>Our Team</Link>
                 </li>
                 <li>
-                  <Link href='/blog'>Blog</Link>
+                  <Link href='/contact'>Contact Us</Link>
                 </li>
               </ul>
             )}
@@ -59,27 +59,27 @@ const Footer = () => {
           <div className={footer.footerSection}>
             <div
               className={footer.sectionHeader}
-              onClick={() => toggleSection("services")}
+              onClick={() => toggleSection("features")}
             >
               <h3>
-                Services
-                {openSections.includes("services") ? (
+                Features
+                {openSections.includes("features") ? (
                   <FaChevronUp />
                 ) : (
                   <FaChevronDown />
                 )}
               </h3>
             </div>
-            {openSections.includes("services") && (
+            {openSections.includes("features") && (
               <ul>
                 <li>
-                  <Link href='/property-management'>Property Management</Link>
+                  <Link href='/url-check'>URL Check</Link>
                 </li>
                 <li>
-                  <Link href='/tenant-screening'>Tenant Screening</Link>
+                  <Link href='/browser-extension'>Browser Extension</Link>
                 </li>
                 <li>
-                  <Link href='/maintenance'>Maintenance</Link>
+                  <Link href='/api-docs'>API Documentation</Link>
                 </li>
               </ul>
             )}
@@ -101,13 +101,13 @@ const Footer = () => {
             {openSections.includes("resources") && (
               <ul>
                 <li>
+                  <Link href='/blog'>Blog</Link>
+                </li>
+                <li>
                   <Link href='/faq'>FAQ</Link>
                 </li>
                 <li>
-                  <Link href='/guides'>Guides</Link>
-                </li>
-                <li>
-                  <Link href='/support'>Support</Link>
+                  <Link href='/security-tips'>Security Tips</Link>
                 </li>
               </ul>
             )}

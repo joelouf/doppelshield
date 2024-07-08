@@ -1,3 +1,4 @@
+import Banner from "@/components/Banner";
 import Footer from "@/components/Footer";
 import Nav from "@/components/Nav";
 import "@/app/globals.css";
@@ -18,6 +19,7 @@ export default function RootLayout({
     <html lang='en'>
       <body className={`${mulish.className} antialiased`}>
         <Nav />
+        <Banner />
         <main>{children}</main>
         <Footer />
       </body>

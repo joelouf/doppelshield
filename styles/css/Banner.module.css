@@ -1,0 +1,33 @@
+.banner {
+  background-color: #f0f0f0;
+  color: var(--text-color);
+  padding: 0.5rem 1rem;
+  text-align: center;
+  position: relative;
+  width: 100%;
+}
+
+.bannerLink {
+  color: var(--accent-color);
+  text-decoration: underline;
+}
+
+.bannerLink:hover {
+  color: var(--primary-color);
+}
+
+.bannerClose {
+  position: absolute;
+  right: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: var(--text-color);
+}
+
+.bannerClose:hover {
+  color: var(--accent-color);
+}
