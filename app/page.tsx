@@ -20,7 +20,7 @@ const HomePage = () => {
     setResults([]);
 
     if (url.trim() === "") {
-      setResults(["Please enter a valid URL."]);
+      setResults(["Please enter a valid URL"]);
       setIsChecking(false);
       return;
     }

@@ -16,77 +16,14 @@
 
 .footerContent {
   display: flex;
-  flex-wrap: nowrap;
-  justify-content: space-evenly;
-  margin-bottom: 10px;
-  color: var(--hover-text-color);
-}
-
-.sectionHeader {
-  display: flex-block;
-  align-items: center;
   justify-content: center;
-  cursor: pointer;
+  margin-bottom: 20px;
   color: var(--hover-text-color);
 }
 
-.sectionHeader h3 {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  cursor: pointer;
-  margin-bottom: 10px;
-  color: var(--hover-text-color);
-}
-
-.sectionHeader svg {
-  display: block;
-  margin-left: 6px;
-  font-size: 14px;
-  transition: transform 0.4s ease-in-out;
-}
-
-.sectionHeader:hover svg {
-  display: flex;
-  transform: rotate(180deg);
-}
-
-.footerSection {
-  display: inline-block;
+.specialThanks {
+  font-size: 16px;
   text-align: center;
-  color: var(--hover-text-color);
-  flex-basis: 25%;
-}
-
-.footerSection h3 {
-  display: flex;
-  font-size: 18px;
-  font-weight: bold;
-  color: var(--hover-text-color);
-}
-
-.footerSection ul {
-  display: block;
-  list-style: none;
-  margin: 10px;
-  color: var(--hover-text-color);
-}
-
-.footerSection ul li a,
-.footerSection ul li button {
-  display: inline-flex;
-  padding-bottom: 10px;
-  text-decoration: none;
-  background: none;
-  border: none;
-  cursor: pointer;
-  transition: color 0.3s ease;
-  color: var(--hover-text-color);
-}
-
-.footerSection ul li a:hover,
-.footerSection ul li button:hover {
-  color: var(--backdrop-color);
 }
 
 .footerBottom {
