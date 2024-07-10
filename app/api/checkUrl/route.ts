@@ -30,14 +30,15 @@ async function checkRedirects(
 ): Promise<string[]> {
   let resultMessages: string[] = [];
 
-  const prefixedUrl = prefixUrl(url);
   const { expanded: expandedUrl } = await expandUrl(url);
 
   resultMessages.push(`URL expanded to ${expandedUrl}`);
 
+  const prefixedUrl = prefixUrl(expandedUrl);
+
   const cyrillicRegex = /[\u0400-\u04FF]/;
 
-  if (cyrillicRegex.test(expandedUrl)) {
+  if (cyrillicRegex.test(prefixedUrl)) {
     resultMessages.push(`Warning: URL contains Cyrillic characters`);
   } else {
     resultMessages.push(`No Cyrillic characters found in the URL`);
