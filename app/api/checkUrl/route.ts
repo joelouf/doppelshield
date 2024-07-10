@@ -11,8 +11,7 @@ function prefixUrl(url: string): string {
 
 async function expandUrl(url: string): Promise<{ expanded: string }> {
   try {
-    const prefixedUrl = prefixUrl(url);
-    const response = await fetch(prefixedUrl, {
+    const response = await fetch(url, {
       method: "GET",
       redirect: "follow"
     });
