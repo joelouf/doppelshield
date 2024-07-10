@@ -37,7 +37,7 @@ const HomePage = () => {
       const data = await response.json();
       setResults(data.messages);
     } catch (error) {
-      setResults(["An error occurred while checking the URL."]);
+      setResults(["An error occurred while checking the URL"]);
     } finally {
       setIsChecking(false);
     }
@@ -51,7 +51,7 @@ const HomePage = () => {
       </header>
       <main className={homepage.main}>
         <p className={homepage.instructions}>
-          Enter a URL and check it to see results.
+          Enter a URL and check it to see results
         </p>
         <div className={homepage.inputGroup}>
           <input
@@ -85,7 +85,7 @@ const HomePage = () => {
               ))}
             </ul>
           ) : (
-            <p className={homepage.readyMessage}>Ready to check URLs.</p>
+            <p className={homepage.readyMessage}>Ready to check URLs</p>
           )}
         </div>
       </main>
