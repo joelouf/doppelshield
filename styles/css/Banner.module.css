@@ -1,7 +1,7 @@
 .banner {
   background-color: #f0f0f0;
   color: var(--text-color);
-  padding: 0.5rem 1rem;
+  padding: 0.5rem 2rem;
   text-align: center;
   position: relative;
   width: 100%;
@@ -30,4 +30,16 @@
 
 .bannerClose:hover {
   color: var(--accent-color);
+}
+
+@media screen and (max-width: 768px) {
+  .banner {
+    padding: 0.5rem 3rem 0.5rem 1rem;
+    text-align: left;
+  }
+
+  .bannerClose {
+    right: 0.5rem;
+    font-size: 1.2rem;
+  }
 }

@@ -53,3 +53,32 @@
 .socialIcons a:hover {
   color: var(--backdrop-color);
 }
+
+@media screen and (max-width: 768px) {
+  .container {
+    margin: 0;
+    padding: 0 10px;
+  }
+
+  .specialThanks {
+    font-size: 14px;
+  }
+
+  .footerBottom {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .footerBottom p {
+    margin-bottom: 10px;
+  }
+
+  .socialIcons {
+    margin-top: 20px;
+  }
+
+  .socialIcons a {
+    margin: 0 10px;
+  }
+}

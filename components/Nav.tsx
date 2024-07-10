@@ -5,9 +5,11 @@ import nav from "@/styles/css/Nav.module.css";
 import { useEffect, useRef, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import Image from "next/image";
+import { FaBars, FaTimes } from "react-icons/fa";
 
 const Nav = () => {
   const [show, setShow] = useState(true);
+  const [isOpen, setIsOpen] = useState(false);
   const scrollYRef = useRef(0);
 
   useEffect(() => {
@@ -26,6 +28,10 @@ const Nav = () => {
     { href: "/about", label: "About" },
     { href: "/contact", label: "Contact" }
   ];
+
+  const toggleMenu = () => {
+    setIsOpen(!isOpen);
+  };
 
   return (
     <nav
@@ -48,7 +54,7 @@ const Nav = () => {
         />
       </Link>
 
-      <div className={nav.tabsContainer}>
+      <div className={`${nav.tabsContainer} ${isOpen ? nav.open : ""}`}>
         {guestLinks.map(({ href, label }) => (
           <Link key={uuidv4()} href={href} className={nav.tab}>
             {label}
@@ -58,6 +64,10 @@ const Nav = () => {
         <Link href='/extension' className={nav.extensionButton}>
           Browser Extension
         </Link>
+      </div>
+
+      <div className={nav.hamburger} onClick={toggleMenu}>
+        {isOpen ? <FaTimes /> : <FaBars />}
       </div>
     </nav>
   );
