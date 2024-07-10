@@ -43,7 +43,7 @@ const Nav = () => {
         <Image
           width={50}
           height={50}
-          src='/doppelshield-logo-white-transparent.svg'
+          src='/doppelshield-no-bg.png'
           alt='DoppelShield logo'
         />
       </Link>

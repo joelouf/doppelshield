@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import {
-  FaInstagram,
+  FaEnvelope,
   FaLinkedinIn,
   FaChevronDown,
   FaChevronUp,
@@ -76,7 +76,7 @@ const Footer = () => {
                   <Link href='/url-check'>URL Check</Link>
                 </li>
                 <li>
-                  <Link href='/browser-extension'>Browser Extension</Link>
+                  <Link href='/extension'>Browser Extension</Link>
                 </li>
                 <li>
                   <Link href='/api-docs'>API Documentation</Link>
@@ -120,14 +120,14 @@ const Footer = () => {
             <Link href='https://github.com/jmlouf' target='_blank'>
               <FaGithub />
             </Link>
-            <Link href='https://www.instagram.com/jlouf' target='_blank'>
-              <FaInstagram />
-            </Link>
             <Link
               href='https://www.linkedin.com/in/joemmaalouf'
               target='_blank'
             >
               <FaLinkedinIn />
+            </Link>
+            <Link href='mailto:joem3847@gmail.com'>
+              <FaEnvelope />
             </Link>
           </span>
         </div>

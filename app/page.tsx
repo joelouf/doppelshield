@@ -6,21 +6,21 @@ import homepage from "@/styles/css/HomePage.module.css";
 
 const HomePage = () => {
   const [url, setUrl] = useState("");
-  const [result, setResult] = useState("Ready to check URLs.");
+  const [results, setResults] = useState<string[]>([]);
   const [isChecking, setIsChecking] = useState(false);
 
   useEffect(() => {
     if (url.trim() === "") {
-      setResult("Ready to check URLs.");
+      setResults([]);
     }
   }, [url]);
 
   const checkUrl = async () => {
     setIsChecking(true);
-    setResult(""); // Clear previous result
+    setResults([]);
 
     if (url.trim() === "") {
-      setResult("Please enter a valid URL.");
+      setResults(["Please enter a valid URL."]);
       setIsChecking(false);
       return;
     }
@@ -35,9 +35,9 @@ const HomePage = () => {
       });
 
       const data = await response.json();
-      setResult(data.message);
+      setResults(data.messages);
     } catch (error) {
-      setResult("An error occurred while checking the URL.");
+      setResults(["An error occurred while checking the URL."]);
     } finally {
       setIsChecking(false);
     }
@@ -73,10 +73,20 @@ const HomePage = () => {
           </button>
         </div>
         <div className={homepage.resultContainer}>
-          <h2>Result:</h2>
-          <p className={homepage.result}>
-            {isChecking ? "Checking URL..." : result}
-          </p>
+          <h2>Results:</h2>
+          {isChecking ? (
+            <p className={homepage.checking}>Checking URL...</p>
+          ) : results.length > 0 ? (
+            <ul className={homepage.resultList}>
+              {results.map((message, index) => (
+                <li key={index} className={homepage.resultItem}>
+                  {message}
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p className={homepage.readyMessage}>Ready to check URLs.</p>
+          )}
         </div>
       </main>
     </div>

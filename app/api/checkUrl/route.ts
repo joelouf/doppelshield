@@ -1,37 +1,57 @@
 import { NextResponse } from "next/server";
 
-const MAX_REDIRECTS = 5;
+const MAX_REDIRECTS = 3;
+
+function prefixUrl(url: string): string {
+  if (!url.startsWith("http://") && !url.startsWith("https://")) {
+    return `http://${url}`;
+  }
+  return url;
+}
+
+async function expandUrl(url: string): Promise<{ expanded: string }> {
+  try {
+    const prefixedUrl = prefixUrl(url);
+    const response = await fetch(prefixedUrl, {
+      method: "GET",
+      redirect: "follow"
+    });
+    return {
+      expanded: response.url
+    };
+  } catch (error) {
+    console.error("Error expanding URL:", error);
+    return { expanded: url };
+  }
+}
 
 async function checkRedirects(
   url: string,
   redirectCount: number = 0
-): Promise<string> {
-  if (!/^https?:\/\//i.test(url)) {
-    url = `https://${url}`;
-  }
+): Promise<string[]> {
+  let resultMessages: string[] = [];
 
-  if (/^http:\/\//i.test(url)) {
-    return "Warning: The URL uses HTTP, which is not secure. Consider using HTTPS instead.";
-  }
+  const prefixedUrl = prefixUrl(url);
+  const { expanded: expandedUrl } = await expandUrl(prefixedUrl);
+
+  resultMessages.push(`URL expanded to ${expandedUrl}`);
 
   const cyrillicRegex = /[\u0400-\u04FF]/;
 
-  const validUrlRegex = /^[a-z0-9!@#$%^&*()_+\-=`~\[\]\\{}|;':",./<>?]+$/i;
-
-  if (cyrillicRegex.test(url)) {
-    return `Warning: URL contains Cyrillic characters`;
-  }
-
-  if (!validUrlRegex.test(url)) {
-    return `Warning: URL contains invalid characters`;
+  if (cyrillicRegex.test(expandedUrl)) {
+    resultMessages.push(`Warning: URL contains Cyrillic characters`);
+  } else {
+    resultMessages.push(`No Cyrillic characters found in the URL`);
   }
 
   if (redirectCount >= MAX_REDIRECTS) {
-    return `Warning: Maximum number of redirects (${MAX_REDIRECTS}) reached`;
+    resultMessages.push(
+      `Warning: Maximum number of redirects (${MAX_REDIRECTS}) reached`
+    );
   }
 
   try {
-    const response = await fetch(url, {
+    const response = await fetch(prefixedUrl, {
       method: "GET",
       redirect: "manual"
     });
@@ -45,20 +65,22 @@ async function checkRedirects(
       return checkRedirects(redirectedUrl, redirectCount + 1);
     }
 
-    if (response.ok) {
-      return "URL appears safe.";
-    } else {
-      return `Error: Received status code ${response.status} (${response.statusText})`;
+    if (!response.ok) {
+      resultMessages.push(
+        `URL returned status code ${response.status} (${response.statusText})`
+      );
     }
   } catch (error) {
     console.error("Error checking URL:", error);
-    return "Error: URL is unreachable or invalid";
+    resultMessages.push("Error: URL is unreachable or invalid");
   }
+
+  return resultMessages;
 }
 
 export async function POST(request: Request) {
   const { url } = await request.json();
 
-  const result = await checkRedirects(url);
-  return NextResponse.json({ message: result });
+  const results = await checkRedirects(url);
+  return NextResponse.json({ messages: results });
 }
