@@ -31,7 +31,7 @@ async function checkRedirects(
   let resultMessages: string[] = [];
 
   const prefixedUrl = prefixUrl(url);
-  const { expanded: expandedUrl } = await expandUrl(prefixedUrl);
+  const { expanded: expandedUrl } = await expandUrl(url);
 
   resultMessages.push(`URL expanded to ${expandedUrl}`);
 
