@@ -1,5 +1,7 @@
 name: DoppelShield
-category: software-development
+fields: 
+  - cybersecurity
+  - software-development
 tags:
   - react
   - nodejs
