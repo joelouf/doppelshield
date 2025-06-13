@@ -1,0 +1,11 @@
+name: DoppelShield
+category: software-development
+tags:
+  - react
+  - nodejs
+  - javascript
+  - css
+description: A web app that helps to protect against homograph/homoglyph attacks.
+status: completed
+github: https://github.com/joelouf/doppelshield
+demo: https://example.com
