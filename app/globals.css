@@ -1,32 +1,32 @@
-@import "tailwindcss/base";
+@import 'tailwindcss';
 
 :root {
-  --default-font-family: var(--font-mulish);
+    --default-font-family: var(--font-mulish);
 
-  --nav-background-color-1: #000f1f;
-  --nav-background-color-2: #11638f;
-  --nav-background-color-3: #ffffff;
+    --nav-background-color-1: #000f1f;
+    --nav-background-color-2: #11638f;
+    --nav-background-color-3: #ffffff;
 
-  --background-color: #ffffff;
+    --background-color: #ffffff;
 
-  --primary-color: #005a8c;
-  --accent-color: #bf00ff;
-  --lighter-accent-color: #f9e6ff;
+    --primary-color: #005a8c;
+    --accent-color: #bf00ff;
+    --lighter-accent-color: #f9e6ff;
 
-  --text-color: #0a2744;
-  --hover-text-color: #ffffff;
+    --text-color: #0a2744;
+    --hover-text-color: #ffffff;
 
-  background: var(--background-color);
-  color: var(--text-color);
+    background: var(--background-color);
+    color: var(--text-color);
 
-  scrollbar-color: #888 transparent;
+    scrollbar-color: #888 transparent;
 }
 
 body {
-  margin: 0;
-  overflow-x: hidden;
-  font-family: var(--default-font-family);
-  scrollbar-gutter: stable;
+    margin: 0;
+    overflow-x: hidden;
+    font-family: var(--default-font-family);
+    scrollbar-gutter: stable;
 }
 
 h1,
@@ -35,19 +35,15 @@ h3,
 h4,
 h5,
 h6 {
-  color: var(--primary-color);
+    color: var(--primary-color);
 }
 
 a {
-  color: var(--accent-color);
-  text-decoration: none;
+    color: var(--accent-color);
+    text-decoration: none;
 }
 
 ::selection {
-  background-color: var(--accent-color);
-  color: var(--hover-text-color);
+    background-color: var(--accent-color);
+    color: var(--hover-text-color);
 }
-
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
