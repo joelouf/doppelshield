@@ -48,7 +48,7 @@ To run the DoppelShield application locally, follow these steps:
 
 ## Contact
 
-If you have any questions, suggestions, or feedback, please feel free to reach out to us via the contact form on our website or by emailing [joem3847@gmail.com](mailto:joem3847@gmail.com).
+If you have any questions, suggestions, or feedback, please feel free to reach out to us via the contact form on our website or by emailing [contact@joelouf.com](mailto:contact@joelouf.com).
 
 ## License
 
