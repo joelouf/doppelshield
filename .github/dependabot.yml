@@ -1,11 +1,15 @@
+# =============================================================================
+# Dependabot Configuration
+# https://docs.github.com/en/code-security/dependabot/dependabot-version-updates
+# =============================================================================
 version: 2
+
 updates:
   # JavaScript/Node.js (npm, pnpm, yarn auto-detected)
   - package-ecosystem: "npm"
     directory: "/"
     schedule:
-      interval: "weekly"
-      day: "monday"
+      interval: "daily"
       time: "09:00"
       timezone: "America/Los_Angeles"
     open-pull-requests-limit: 10
@@ -20,15 +24,3 @@ updates:
         update-types:
           - "minor"
           - "patch"
-
-  # GitHub Actions
-  - package-ecosystem: "github-actions"
-    directory: "/"
-    schedule:
-      interval: "weekly"
-    open-pull-requests-limit: 5
-    commit-message:
-      prefix: "ci"
-    labels:
-      - "dependencies"
-      - "ci"
