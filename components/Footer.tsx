@@ -11,8 +11,8 @@ const Footer = () => {
             <div className={footer.container}>
                 <div className={footer.footerContent}>
                     <p className={footer.specialThanks}>
-                        Thank you to Professor Skinner and Ben Piehler for their
-                        guidance and support in bringing DoppelShield to life
+                        Developed as an academic project at the University of
+                        Kansas
                     </p>
                 </div>
                 <div className={footer.footerBottom}>
