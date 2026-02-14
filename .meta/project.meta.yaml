@@ -10,4 +10,4 @@ tags:
 description: A web app that helps to protect against homograph/homoglyph attacks.
 status: completed
 github: https://github.com/joelouf/doppelshield
-demo: https://example.com
+demo: https://doppelshield.netlify.app

@@ -1,20 +1,31 @@
-<p id="top">
+<section id="title">
   <img src="./public/doppelshield_banner.svg" alt="DoppelShield Banner" width="100%">
-</p>
+</section>
 
-<div align="center">
+<section id="badges" align="center">
 
 [![License Badge](https://img.shields.io/badge/license-MIT-green)](./LICENSE)
 
-</div>
+</section>
 
-DoppelShield is a web application that protects users from homograph attacks and misleading URLs. It detects and exposes URLs that contain Cyrillic characters, which are often used by malicious actors to trick users into visiting deceptive websites.
+<br />
+
+<section id="description">
+  <p>
+    A web application designed to detect and expose homograph attacks, where deceptive URLs use visually similar characters from non-Latin scripts to impersonate legitimate domains. DoppelShield analyzes URLs for Cyrillic character substitutions, follows redirect chains, and flags lookalike domains before users interact with them.
+  </p>
+  
+  <p>
+    Built with Next.js and TypeScript, it provides both a user-facing interface and an API endpoint for programmatic URL analysis.
+  </p>
+</section>
+
+<hr />
 
 <details open>
   <summary style="overflow: hidden; cursor: pointer;">
-    <h2 style="display: inline; float: right; width: calc(100% - 25px); margin: 0; position: relative; top: -0.085em;" id="table-of-contents">Table of Contents</h2>
+    <h2 style="display: inline; position: relative;" id="table-of-contents">&nbsp;&thinsp;Table of Contents</h2>
   </summary>
-
   <nav style="clear: both; margin-top: 1rem">
     <ol type="I">
       <li><a href="#features">Features</a></li>
@@ -31,40 +42,58 @@ DoppelShield is a web application that protects users from homograph attacks and
 
 <h2 id="features">Features</h2>
 
-- Detects Cyrillic characters in URLs
-- Follows redirects to ensure the final destination URL is checked
-- Provides warnings for URLs containing Cyrillic characters
-- Checks URL validity and maximum number of redirects
-- User-friendly interface for easy URL checking
-- API endpoint for programmatic access
+<ul>
+  <li>Detects Cyrillic characters in URLs</li>
+  <li>Follows redirects to ensure the final destination URL is checked</li>
+  <li>Provides warnings for URLs containing Cyrillic characters</li>
+  <li>Checks URL validity and maximum number of redirects</li>
+  <li>User-friendly interface for easy URL checking</li>
+  <li>API endpoint for programmatic access</li>
+</ul>
+
+<br />
 
 <h2 id="tools--technologies">Tools & Technologies</h2>
 
-- React
-- Next.js
-- TypeScript
-- CSS Modules
-- Formspree (for contact form)
+<ul>
+  <li>React</li>
+  <li>Next.js</li>
+  <li>TypeScript</li>
+  <li>CSS Modules</li>
+  <li>Formspree (for contact form)</li>
+</ul>
+
+<br />
 
 <h2 id="getting-started">Getting Started</h2>
 
-To run the DoppelShield application locally, follow these steps:
+<p>To run the DoppelShield application locally, follow these steps:</p>
 
-1. Clone the repository.
-2. Navigate to the project directory.
-3. Install the dependencies.
-4. Start the development server.
-5. Open your browser and visit the specified URL to see the application running.
+<ol>
+  <li>Clone the repository</li>
+  <li>Navigate to the project directory</li>
+  <li>Install the dependencies</li>
+  <li>Start the development server</li>
+  <li>Open your browser and visit the specified URL to see the application running</li>
+</ol>
+
+<br />
 
 <h2 id="usage">Usage</h2>
 
-6. On the homepage, enter a URL into the input field and click the "Check URL" button.
-7. DoppelShield will expand the URL, follow any redirects, and check for the presence of Cyrillic characters.
-8. The results will be displayed below the input field, indicating whether Cyrillic characters were found and any other relevant warnings.
+<ul>
+  <li>On the homepage, enter a URL into the input field and click the "Check URL" button</li>
+  <li>DoppelShield will expand the URL, follow any redirects, and check for the presence of Cyrillic characters</li>
+  <li>The results will be displayed below the input field, indicating whether Cyrillic characters were found and any other relevant warnings</li>
+</ul>
+
+<br />
 
 <h2 id="license">License</h2>
 
 <p>This project is licensed under the <b><a href="https://opensource.org/licenses/mit">MIT License</a></b>. For more details regarding rights and limitations, see <a href="./LICENSE">LICENSE</a>.</p>
+
+<br />
 
 <h2 id="contact">Contact</h2>
 
@@ -74,5 +103,7 @@ To run the DoppelShield application locally, follow these steps:
 </address>
 
 <br />
+<br />
+<hr />
 
-<p align="right"><a href="#top">Back to top ↑</a></p>
+<p align="right"><a href="#title">Back to top ↑</a></p>
