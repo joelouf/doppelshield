@@ -99,7 +99,7 @@
 
 <h3>Joe Maalouf</h3>
 <address style="display: flex; justify-content: flex-start; list-style-type: none;">
-  <a href="https://github.com/joelouf" title="GitHub: @joelouf"><img src="https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white" height="32" alt="github.com/joelouf" /></a><a href="https://linkedin.com/in/joelouf" title="LinkedIn: /in/joelouf"><img src="https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge" height="32" alt="linkedin.com/in/joelouf" /></a>
+  <a href="https://github.com/joelouf" title="GitHub: @joelouf" target="_blank"><img src="https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white" height="32" alt="github.com/joelouf" /></a><a href="https://linkedin.com/in/joelouf" title="LinkedIn: /in/joelouf" target="_blank"><img src="https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge" height="32" alt="linkedin.com/in/joelouf" /></a>
 </address>
 
 <br />
