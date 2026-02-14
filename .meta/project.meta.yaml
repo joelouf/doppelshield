@@ -7,7 +7,7 @@ tags:
   - nodejs
   - javascript
   - css
-description: A web app that helps to protect against homograph/homoglyph attacks.
+description: A web application that detects and exposes homograph attacks by identifying Cyrillic character substitutions in deceptive URLs.
 status: completed
 github: https://github.com/joelouf/doppelshield
 demo: https://doppelshield.netlify.app
