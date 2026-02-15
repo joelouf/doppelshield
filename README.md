@@ -1,5 +1,5 @@
 <section id="title">
-  <img src="./public/doppelshield_banner.svg" alt="DoppelShield Banner" width="100%">
+  <img src="./public/doppelshield-banner.svg" alt="DoppelShield Banner" width="100%">
 </section>
 
 <section id="badges" align="center">
@@ -12,22 +12,18 @@
 
 <section id="description">
   <p>
-    A web application designed to detect and expose homograph attacks, where deceptive URLs use visually similar characters from non-Latin scripts to impersonate legitimate domains. DoppelShield analyzes URLs for Cyrillic character substitutions, follows redirect chains, and flags lookalike domains before users interact with them.
-  </p>
-  
-  <p>
-    Built with Next.js and TypeScript, it provides both a user-facing interface and an API endpoint for programmatic URL analysis.
+    A web application designed to detect and expose homograph attacks, where deceptive URLs use visually similar characters from non-Latin scripts to impersonate legitimate domains. DoppelShield analyzes URLs for Cyrillic character substitutions, follows redirect chains, and flags lookalike domains before users interact with them. Built with Next.js and TypeScript, it provides both a user-facing interface and an API endpoint for programmatic URL analysis.
   </p>
 </section>
 
 <hr />
 
 <details open>
-  <summary style="cursor: pointer;">
-    <object src="./TOC.svg" />
+  <summary style="overflow: hidden; cursor: pointer; margin-top: 4rem;">
+    <h2 style="display: inline;">&nbsp;&thinsp;Table of Contents</h2>
   </summary>
-  <svg 
-  <nav style="clear: both; margin-top: 1rem">
+
+  <nav style="margin-top: 0.6rem">
     <ol type="I">
       <li><a href="#features">Features</a></li>
       <li><a href="#tools--technologies">Tools & Technologies</a></li>
@@ -49,7 +45,6 @@
   <li>Provides warnings for URLs containing Cyrillic characters</li>
   <li>Checks URL validity and maximum number of redirects</li>
   <li>User-friendly interface for easy URL checking</li>
-  <li>API endpoint for programmatic access</li>
 </ul>
 
 <br />
@@ -61,7 +56,7 @@
   <li>Next.js</li>
   <li>TypeScript</li>
   <li>CSS Modules</li>
-  <li>Formspree (for contact form)</li>
+  <li>Formspree</li>
 </ul>
 
 <br />
