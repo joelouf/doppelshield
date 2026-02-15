@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="60" viewBox="0 0 900 60" role="img" aria-label="Table of Contents">
+  <style>
+    text {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 28px;
+      font-weight: 600;
+      fill: #24292f;
+    }
+    line {
+      stroke: #d0d7de;
+      stroke-width: 1;
+    }
+  </style>
+  
+  <text x="0" y="34">Table of Contents</text>
+  <line x1="0" y1="54" x2="900" y2="54" />
+</svg>
