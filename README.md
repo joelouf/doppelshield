@@ -20,18 +20,18 @@
 
 <details open>
   <summary style="overflow: hidden; cursor: pointer; margin-top: 4rem;">
-    <h2 style="display: inline;">&nbsp;&thinsp;Table of Contents</h2>
+    <h2 style="display: inline;">&ensp;Table of Contents</h2>
   </summary>
 
   <nav style="margin-top: 0.6rem">
-    <ol type="I">
+    <ul>
       <li><a href="#features">Features</a></li>
       <li><a href="#tools--technologies">Tools & Technologies</a></li>
       <li><a href="#getting-started">Getting Started</a></li>
-      <li><a href="#usage">Usage</a>
+      <li><a href="#usage">Usage</a></li>
       <li><a href="#license">License</a></li>
       <li><a href="#contact">Contact</a></li>
-    </ol>
+    </ul>
   </nav>
 </details>
 
