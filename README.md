@@ -23,9 +23,10 @@
 <hr />
 
 <details open>
-  <summary style="overflow: hidden; cursor: pointer;">
-    <h2 style="display: inline; position: relative;" id="table-of-contents">&nbsp;&thinsp;Table of Contents</h2>
+  <summary style="cursor: pointer;">
+    <object src="./TOC.svg" />
   </summary>
+  <svg 
   <nav style="clear: both; margin-top: 1rem">
     <ol type="I">
       <li><a href="#features">Features</a></li>
