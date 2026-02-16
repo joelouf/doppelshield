@@ -16,10 +16,10 @@
   </p>
 </section>
 
-<hr />
+<br />
 
 <details open>
-  <summary style="overflow: hidden; cursor: pointer; margin-top: 4rem;">
+  <summary style="overflow: hidden; cursor: pointer;">
     <h2 style="display: inline;">&ensp;Table of Contents</h2>
   </summary>
 
@@ -35,8 +35,6 @@
   </nav>
 </details>
 
-<br />
-
 <h2 id="features">Features</h2>
 
 <ul>
@@ -47,8 +45,6 @@
   <li>User-friendly interface for easy URL checking</li>
 </ul>
 
-<br />
-
 <h2 id="tools--technologies">Tools & Technologies</h2>
 
 <ul>
@@ -58,8 +54,6 @@
   <li>CSS Modules</li>
   <li>Formspree</li>
 </ul>
-
-<br />
 
 <h2 id="getting-started">Getting Started</h2>
 
@@ -73,8 +67,6 @@
   <li>Open your browser and visit the specified URL to see the application running</li>
 </ol>
 
-<br />
-
 <h2 id="usage">Usage</h2>
 
 <ul>
@@ -83,13 +75,9 @@
   <li>The results will be displayed below the input field, indicating whether Cyrillic characters were found and any other relevant warnings</li>
 </ul>
 
-<br />
-
 <h2 id="license">License</h2>
 
 <p>This project is licensed under the <b><a href="https://opensource.org/licenses/mit">MIT License</a></b>. For more details regarding rights and limitations, see <a href="./LICENSE">LICENSE</a>.</p>
-
-<br />
 
 <h2 id="contact">Contact</h2>
 
@@ -98,7 +86,6 @@
   <a href="https://github.com/joelouf" title="GitHub: @joelouf" target="_blank"><img src="https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white" height="32" alt="github.com/joelouf" /></a>&ensp;<a href="https://linkedin.com/in/joelouf" title="LinkedIn: /in/joelouf" target="_blank"><img src="https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge" height="32" alt="linkedin.com/in/joelouf" /></a>
 </address>
 
-<br />
 <br />
 <hr />
 
