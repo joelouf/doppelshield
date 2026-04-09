@@ -11,25 +11,25 @@
   "dependencies": {
     "@formspree/react": "^3.0.0",
     "@radix-ui/themes": "^3.3.0",
-    "@tailwindcss/postcss": "^4.2.1",
+    "@tailwindcss/postcss": "^4.2.2",
     "@types/uuid": "^10.0.0",
     "@types/validator": "^13.12.0",
-    "next": "^16.1.6",
+    "next": "^16.2.3",
     "punycode": "^2.3.1",
     "react": "^19",
     "react-dom": "^19",
-    "react-icons": "^5.2.1",
+    "react-icons": "^5.6.0",
     "uuid": "^10.0.0",
-    "validator": "^13.15.22"
+    "validator": "^13.15.35"
   },
   "devDependencies": {
     "@types/node": "^25",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "autoprefixer": "^10.4.27",
-    "eslint": "^10.0.2",
-    "eslint-config-next": "16.1.6",
-    "postcss": "^8.5.6",
+    "eslint": "^10.2.0",
+    "eslint-config-next": "16.2.3",
+    "postcss": "^8.5.9",
     "tailwindcss": "^4.2.1",
     "typescript": "^5"
   },
