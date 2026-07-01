@@ -1,0 +1,24 @@
+DoppelShield
+Copyright (c) 2026 Joe Maalouf
+
+This product is licensed under the MIT License (see LICENSE).
+
+Third-party data attribution
+----------------------------
+
+DoppelShield ships a brand-target list (src/core/checkurl/data/
+brandTargets.generated.ts) used to detect look-alike (homograph) domains. It is
+derived from a public domain-popularity ranking. Only registrable domain names
+are retained; the transformation is in scripts/gen-brand-targets.mjs.
+
+The default source is the Majestic Million, published by Majestic:
+  https://majestic.com/reports/majestic-million
+  Licensed under Creative Commons Attribution 3.0 (CC BY 3.0):
+  https://creativecommons.org/licenses/by/3.0/
+
+The generator also accepts equivalent rankings in place of Majestic Million:
+  - Tranco:            https://tranco-list.eu
+  - Cisco Umbrella 1M: https://umbrella.cisco.com
+
+Each source remains under its own license and terms; this notice provides the
+attribution those terms request.

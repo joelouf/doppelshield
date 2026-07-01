@@ -1,13 +1,17 @@
 name: DoppelShield
-fields: 
+fields:
   - cybersecurity
   - software-development
 tags:
   - react
+  - nextjs
   - nodejs
+  - typescript
   - javascript
   - css
-description: A web application that detects and exposes homograph attacks by identifying Cyrillic character substitutions in deceptive URLs.
+description: URL forensics tool that decodes the host, flags look-alike characters, and traces the redirect chain to surface homograph attacks.
 status: completed
+archetype: node-ts-app
+stage: 2
 github: https://github.com/joelouf/doppelshield
 demo: https://doppelshield.netlify.app

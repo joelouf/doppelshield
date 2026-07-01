@@ -1,0 +1,108 @@
+.url {
+    word-break: break-all;
+}
+
+.url[data-open='false'] {
+    display: inline-flex;
+    max-width: 100%;
+    align-items: baseline;
+    word-break: normal;
+}
+
+.url[data-open='false'] .body {
+    flex: 0 1 auto;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    color: var(--ds-muted);
+}
+
+.scheme,
+.port,
+.userinfo,
+.path {
+    color: var(--ds-muted);
+}
+
+.host {
+    color: var(--ds-text);
+}
+
+.ellipsis {
+    color: var(--ds-muted);
+}
+
+.confusable {
+    --mark-fg: var(--ds-danger);
+    --mark-bg: var(--ds-danger-soft);
+    --mark-line: var(--ds-danger);
+    background-color: var(--mark-bg);
+    color: var(--mark-fg);
+    border-bottom: 2px solid var(--mark-line);
+    font-weight: 500;
+}
+
+.confusableCaution {
+    --mark-fg: var(--ds-caution);
+    --mark-bg: var(--ds-caution-soft);
+    --mark-line: var(--ds-caution);
+    background-color: var(--mark-bg);
+    color: var(--mark-fg);
+    border-bottom: 2px solid var(--mark-line);
+    font-weight: 500;
+}
+
+.nonAscii {
+    --mark-fg: var(--ds-text-dim);
+    --mark-bg: color-mix(in srgb, var(--ds-muted) 12%, transparent);
+    --mark-line: var(--ds-muted);
+    background-color: var(--mark-bg);
+    color: var(--mark-fg);
+    border-bottom: 2px solid var(--mark-line);
+    font-weight: 500;
+}
+
+@keyframes markIgnite {
+    from {
+        color: var(--ds-text);
+        background-color: transparent;
+        border-bottom-color: transparent;
+    }
+
+    to {
+        color: var(--mark-fg);
+        background-color: var(--mark-bg);
+        border-bottom-color: var(--mark-line);
+    }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+    .confusable,
+    .confusableCaution,
+    .nonAscii {
+        animation: markIgnite var(--dur-med) var(--ease-out) both
+            calc(var(--i, 0) * var(--develop-step) + var(--dur-base));
+    }
+}
+
+.expander {
+    flex: none;
+    display: inline-flex;
+    align-items: center;
+    gap: var(--chevron-gap);
+    margin-left: var(--space-1);
+    padding: 0;
+    font: inherit;
+    font-size: var(--text-sm);
+    color: var(--ds-accent);
+    background: none;
+    border: 0;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: color var(--dur-fast) var(--ease-out);
+}
+
+.expander:hover {
+    color: var(--ds-accent-bright);
+}

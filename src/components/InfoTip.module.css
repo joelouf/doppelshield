@@ -1,0 +1,61 @@
+.wrap {
+    display: inline-flex;
+    align-items: center;
+    vertical-align: middle;
+    margin-left: var(--space-2);
+}
+
+.trigger {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    margin: 0;
+    background: none;
+    border: 0;
+    color: color-mix(in srgb, var(--ds-muted) 55%, transparent);
+    cursor: help;
+    transition: color var(--dur-fast) var(--ease-out);
+}
+
+.trigger:hover,
+.trigger:focus-visible {
+    color: var(--ds-accent);
+}
+
+.trigger svg {
+    width: 1em;
+    height: 1em;
+}
+
+.popover {
+    position: fixed;
+    z-index: var(--z-overlay);
+    max-width: 280px;
+    padding: var(--space-3) var(--space-4);
+    background: var(--ds-surface-2);
+    border: 1px solid var(--ds-border-bright);
+    box-shadow: var(--elev-2);
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    line-height: var(--leading-normal);
+    color: var(--ds-text-dim);
+}
+
+@keyframes tipIn {
+    from {
+        opacity: 0;
+        transform: translateY(-4px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+    .popover {
+        animation: tipIn var(--dur-fast) var(--ease-out);
+    }
+}
