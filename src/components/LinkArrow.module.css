@@ -1,0 +1,10 @@
+.arrow {
+    font-size: 0.85em;
+    transform: translate(-1px, 1px);
+    transition: transform var(--dur-fast) var(--ease-out);
+}
+
+.host:hover .arrow,
+.host:focus-visible .arrow {
+    transform: translate(2px, -2px);
+}

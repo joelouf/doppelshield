@@ -1,0 +1,93 @@
+.section {
+    display: block;
+    width: 100%;
+}
+
+.section + .section {
+    border-top: 1px solid var(--ds-border);
+}
+
+.header {
+    display: flex;
+    align-items: stretch;
+}
+
+.toggle {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: var(--chevron-gap);
+    flex: 1;
+    min-width: 0;
+    padding: var(--space-4) var(--space-5);
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    color: var(--ds-muted);
+    background: none;
+    border: none;
+    cursor: pointer;
+    text-align: left;
+    transition: color var(--dur-fast) var(--ease-out);
+}
+
+.heading {
+    display: flex;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    width: 100%;
+    padding: var(--space-4) var(--space-5);
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    color: var(--ds-muted);
+}
+
+.toggle:hover .title,
+.toggle:focus-visible .title {
+    color: var(--ds-accent);
+}
+
+.title {
+    font-weight: 600;
+    color: var(--ds-text-dim);
+    transition: color var(--dur-fast) var(--ease-out);
+}
+
+.aside {
+    margin-left: auto;
+    align-self: center;
+    display: flex;
+    align-items: center;
+    font-size: var(--text-xs);
+    letter-spacing: var(--tracking-wide);
+}
+
+.header .aside {
+    padding-right: var(--space-5);
+}
+
+.collapsible {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows var(--dur-med) var(--ease-out);
+}
+
+.open .collapsible {
+    grid-template-rows: 1fr;
+}
+
+.collapsibleInner {
+    overflow: hidden;
+    min-height: 0;
+}
+
+.collapsibleBody {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-5);
+    padding: var(--space-3) var(--space-5) var(--space-5) var(--section-inset);
+}
