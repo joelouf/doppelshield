@@ -58,3 +58,23 @@ jobs:
       # patched release via the "overrides" block in package.json.
       - name: Audit (fail on moderate and above)
         run: npm audit --audit-level=moderate
+
+  # The Docker image is the deployable artifact, so a Dockerfile that no longer
+  # builds is a broken release even when the app itself compiles. Build (without
+  # pushing) on every run so image breakage is caught at PR time, not at tag time.
+  image:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
+
+      - uses: docker/setup-buildx-action@bb05f3f5519dd87d3ba754cc423b652a5edd6d2c # v4.2.0
+
+      - name: Build image (no push)
+        uses: docker/build-push-action@53b7df96c91f9c12dcc8a07bcb9ccacbed38856a # v7.3.0
+        with:
+          context: .
+          push: false
+          tags: doppelshield:ci
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
