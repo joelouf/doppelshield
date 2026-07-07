@@ -8,6 +8,7 @@
 
 <!-- [![CI](https://github.com/joelouf/doppelshield/.github/workflows/ci.yml/badge.svg)](https://github.com/joelouf/doppelshield/.github/workflows/ci.yml) -->
 <!-- [![CodeQL](https://github.com/joelouf/doppelshield/.github/workflows/codeql.yml/badge.svg)](https://github.com/joelouf/doppelshield/.github/workflows/codeql.yml) -->
+
 [![License: MIT](https://img.shields.io/badge/license-MIT-green)](./LICENSE)
 
 </section>
@@ -150,8 +151,12 @@ The image is multi-stage, runs as a non-root user, and serves the Next.js standa
 
 <h2 id="deployment">Deployment</h2>
 
+Production runs as a single container instance behind an edge proxy; the reasoning is recorded in [ADR-0007](./docs/adr/0007-single-instance-container-topology.md) and the operational procedures (release, deploy, verification, rollback, emergency platform switch) live in the [deployment runbook](./docs/runbook.md).
+
+- Release artifact: version tags publish the image to GHCR, scanned before push, with an SBOM, provenance, and a Sigstore-signed build attestation attached. Deploy by digest on any OCI-compatible host.
+- Health: orchestrator probes and the container HEALTHCHECK target `GET /api/health`, which sits outside the scan rate limiter and discloses nothing but a status field.
 - Detection scope: homoglyph detection covers Cyrillic and Greek, the scripts most often confused with Latin, which is a curated subset of the full Unicode confusables set. A clean result means "no known homoglyphs detected," not "safe." DoppelShield is not a malware scanner or a reputation service.
-- Single instance: the rate limiter and concurrency cap are per process and held in memory. Behind multiple replicas the effective limits multiply, and a client can land on different instances. Run a single instance, or move the limiter to a shared store, if you need a hard global cap.
+- Single instance: the rate limiter and concurrency cap are per process and held in memory. Behind multiple replicas the effective limits multiply, and a client can land on different instances. The edge applies the global rate limit; the in-process limiter is defense-in-depth. If horizontal scale is ever needed, a shared-store limiter slots in behind the existing `RateLimiter` interface.
 
 <h2 id="testing">Testing</h2>
 
