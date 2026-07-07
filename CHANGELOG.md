@@ -19,6 +19,8 @@ In Keep a Changelog order, the full set of change types:
   ### Security    — Vulnerability fixes
 -->
 
+## [1.1.0] - 2026-07-07
+
 ### Added
 
 - A minimal `GET /api/health` liveness endpoint for orchestrator probes and uptime
@@ -92,5 +94,6 @@ web interface and a JSON API.
   and cross-origin isolation, with the `/api` scope locked down to `default-src 'none'` and
   `Cache-Control: no-store`.
 
-[Unreleased]: https://github.com/joelouf/doppelshield/compare/v1.0.0...HEAD
+[Unreleased]: https://github.com/joelouf/doppelshield/compare/v1.1.0...HEAD
+[1.1.0]: https://github.com/joelouf/doppelshield/compare/v1.0.0...v1.1.0
 [1.0.0]: https://github.com/joelouf/doppelshield/releases/tag/v1.0.0

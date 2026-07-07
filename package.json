@@ -1,6 +1,6 @@
 {
   "name": "doppelshield",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "URL forensics tool that decodes the host, flags look-alike characters, and traces the redirect chain to surface homograph attacks.",
   "private": true,
   "license": "MIT",
