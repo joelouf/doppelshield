@@ -5,7 +5,6 @@ node_modules
 .gitignore
 .github
 .vscode
-.claude
 .meta
 docs
 scripts
