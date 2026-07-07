@@ -19,6 +19,25 @@ In Keep a Changelog order, the full set of change types:
   ### Security    — Vulnerability fixes
 -->
 
+### Added
+
+- A minimal `GET /api/health` liveness endpoint for orchestrator probes and uptime
+  monitoring, outside the scan rate limiter and disclosing nothing but a status field.
+- A Release workflow that publishes the container image to GHCR on version tags: the
+  image is vulnerability-scanned before push (fixable HIGH/CRITICAL findings block the
+  release), carries a BuildKit SBOM and provenance, and is bound to a Sigstore-signed
+  GitHub build attestation verifiable with `gh attestation verify`.
+- A CI job that builds the Docker image on every pull request, so a broken Dockerfile
+  is caught before release time.
+- ADR-0007 recording the production topology (single container instance behind an
+  edge proxy) and a deployment runbook (`docs/runbook.md`) covering release, deploy,
+  verification, rollback, and emergency platform-switch procedures.
+
+### Changed
+
+- The container HEALTHCHECK now probes `/api/health` instead of rendering the
+  home page.
+
 ### Security
 
 - Bounded request-body reading to a hard byte cap enforced mid-stream. The
