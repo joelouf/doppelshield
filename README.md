@@ -8,7 +8,6 @@
 
 <!-- [![CI](https://github.com/joelouf/doppelshield/.github/workflows/ci.yml/badge.svg)](https://github.com/joelouf/doppelshield/.github/workflows/ci.yml) -->
 <!-- [![CodeQL](https://github.com/joelouf/doppelshield/.github/workflows/codeql.yml/badge.svg)](https://github.com/joelouf/doppelshield/.github/workflows/codeql.yml) -->
-
 [![License: MIT](https://img.shields.io/badge/license-MIT-green)](./LICENSE)
 
 </section>
