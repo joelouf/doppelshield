@@ -60,17 +60,29 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
-      # Gate the release on the scan: HIGH/CRITICAL findings with an available fix block the push.
-      # Unfixed upstream CVEs are reported but not fatal, so the release is never hostage to a patch that does not exist yet.
-      - name: Scan image (fail on fixable HIGH/CRITICAL)
+      # Report pass: Full results to code scanning as SARIF.
+      # In SARIF mode the action ignores severity filters by design, so this step never gates.
+      # Exists purely for visibility in the Security tab.
+      - name: Scan image (report to code scanning)
         uses: aquasecurity/trivy-action@ed142fd0673e97e23eac54620cfb913e5ce36c25 # v0.36.0
         with:
           image-ref: scan-target:${{ github.sha }}
           format: sarif
           output: trivy-image.sarif
+          exit-code: '0'
+
+      # Gate pass: Table mode honors the filters, so this enforces the actual release policy.
+      # Block only on HIGH/CRITICAL findings that have a fix.
+      # Prints readable findings table in the log when it fails.
+      - name: Scan image (fail on fixable HIGH/CRITICAL)
+        uses: aquasecurity/trivy-action@ed142fd0673e97e23eac54620cfb913e5ce36c25 # v0.36.0
+        with:
+          image-ref: scan-target:${{ github.sha }}
+          format: table
           severity: HIGH,CRITICAL
           ignore-unfixed: true
           exit-code: '1'
+          skip-setup-trivy: true
 
       - name: Upload scan results to code scanning
         if: always()
