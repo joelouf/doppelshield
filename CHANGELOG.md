@@ -42,9 +42,8 @@ In Keep a Changelog order, the full set of change types:
 
 ### Security
 
-- Bounded request-body reading to a hard byte cap enforced mid-stream. The
-  Content-Length header is no longer trusted, so an absent or non-numeric value cannot let
-  an oversized body buffer in full before rejection.
+- The runtime image no longer ships npm, corepack, or yarn; the release scan flagged a vendored undici in the base image's npm (CVE-2026-12151), and the standalone server needs only the node binary.
+- Bounded request-body reading to a hard byte cap enforced mid-stream. The Content-Length header is no longer trusted, so an absent or non-numeric value cannot let an oversized body buffer in full before rejection.
 
 ## [1.0.0] - 2026-06-30
 
