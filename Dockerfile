@@ -26,6 +26,12 @@ ENV PORT=3000
 # tini as PID 1 reaps orphaned children and forwards signals.
 # The Next standalone server installs its own SIGTERM handler (tini covers signal delivery and zombies).
 RUN apk add --no-cache tini
+# The runtime executes only `node server.js`.
+# Drop the bundled package managers from the final image so that nothing installs packages at runtime.
+# Removing them both shrinks the image and eliminates their vendored dependency trees from the attack surface.
+RUN rm -rf /usr/local/lib/node_modules \
+    /usr/local/bin/npm /usr/local/bin/npx /usr/local/bin/corepack \
+    /opt/yarn* /usr/local/bin/yarn /usr/local/bin/yarnpkg
 RUN addgroup -g 1001 -S nodejs && adduser -S nextjs -u 1001
 COPY --from=build --chown=nextjs:nodejs /app/public ./public
 COPY --from=build --chown=nextjs:nodejs /app/.next/standalone ./
