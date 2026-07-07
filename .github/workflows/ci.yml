@@ -27,8 +27,8 @@ jobs:
       - name: Install
         run: npm ci
 
-      # Reuse Next.js's build cache across runs so the Build step only
-      # recompiles what changed. Keyed on the lockfile plus source hashes;
+      # Reuse Next.js's build cache across runs so the Build step only recompiles what changed.
+      # Keyed on the lockfile plus source hashes.
       # restore-keys lets a run fall back to the latest cache for this lockfile.
       - name: Cache Next.js build
         uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
@@ -53,15 +53,14 @@ jobs:
       - name: Build
         run: npm run build
 
-      # Moderate and above fail the build. The tree is clean at this level; the
-      # one prior moderate (postcss < 8.5.10, bundled under next) is pinned to a
-      # patched release via the "overrides" block in package.json.
+      # Moderate and above fail the build.
+      # Tree is clean at this level.
+      # The one prior moderate (postcss < 8.5.10) is pinned to a patched release via the "overrides" block in package.json.
       - name: Audit (fail on moderate and above)
         run: npm audit --audit-level=moderate
 
-  # The Docker image is the deployable artifact, so a Dockerfile that no longer
-  # builds is a broken release even when the app itself compiles. Build (without
-  # pushing) on every run so image breakage is caught at PR time, not at tag time.
+  # The Docker image is the deployable artifact, so a Dockerfile that no longer builds is a broken release even when the app itself compiles.
+  # Build (without pushing) on every run so image breakage is caught at PR time, not at tag time.
   image:
     runs-on: ubuntu-latest
     timeout-minutes: 20

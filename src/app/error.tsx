@@ -12,7 +12,7 @@ export default function Error({
 }) {
     // Surface the error so production failures are not silent.
     // This app ships no telemetry service, so console.error is the reporting hook point.
-    // Swap this line for a logger call (with error.digest as the correlation id) if one is added later.
+    // Swap for logger call (with error.digest as correlation id) if added later.
     useEffect(() => {
         console.error(error);
     }, [error]);

@@ -17,9 +17,8 @@ export function resolveClientKey(
 ): string {
     if (!headerName) return 'anon';
 
-    // Take the rightmost hop. A trusted proxy appends the real client IP on the
-    // right, so keying off the last value stops a client from rotating its
-    // bucket by prepending forged entries to an appending header.
+    // Take the rightmost hop.
+    // A trusted proxy appends the real client IP on the right, so keying off the last value stops a client from rotating its bucket by prepending forged entries to an appending header.
     const parts = request.headers
         .get(headerName)
         ?.split(',')

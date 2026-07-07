@@ -1,10 +1,8 @@
 name: Release
 
-# Publishes the deployable artifact: a container image on GHCR, scanned before
-# push, with a BuildKit SBOM and provenance attached to the image and a GitHub
-# build-provenance attestation bound to its digest. Deploys pull by digest, so
-# any OCI host (Fly, Render, a VPS, ECS/App Runner) consumes the same artifact;
-# an ECR mirror is a drop-in additional login + tag if AWS is ever adopted.
+# Publishes the deployable artifact: A container image on GHCR, scanned before push, with a BuildKit SBOM and provenance attached to the image and a GitHub build-provenance attestation bound to its digest.
+# Deploys pull by digest, so any OCI host consumes the same artifact.
+# An ECR mirror is a drop-in additional login & tag if AWS is ever adopted.
 on:
   push:
     tags: ['v*.*.*']
@@ -23,10 +21,14 @@ jobs:
     timeout-minutes: 30
     permissions:
       contents: read
-      packages: write # push to GHCR
-      id-token: write # OIDC for the provenance attestation
-      attestations: write # actions/attest-build-provenance
-      security-events: write # upload the Trivy SARIF to code scanning
+      # Push to GHCR.
+      packages: write
+      # OIDC for the provenance attestation.
+      id-token: write
+      # Actions/attest-build-provenance.
+      attestations: write
+      # Upload the Trivy SARIF to code scanning.
+      security-events: write
     steps:
       - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
 
@@ -42,15 +44,13 @@ jobs:
         uses: docker/metadata-action@dc802804100637a589fabce1cb79ff13a1411302 # v6.2.0
         with:
           images: ghcr.io/${{ github.repository }}
-          # The default flavor also tags stable (non-prerelease) semver
-          # releases as `latest`.
+          # The default flavor also tags stable (non-prerelease) semver releases as `latest`.
           tags: |
             type=semver,pattern={{version}}
             type=semver,pattern={{major}}.{{minor}}
 
-      # Build once into the local Docker store so the exact bytes can be
-      # scanned before anything is published. The buildx cache makes the
-      # later push step a re-tag, not a rebuild.
+      # Build once into the local Docker store so the exact bytes can be scanned before anything is published.
+      # The buildx cache makes the later push step a re-tag, not a rebuild.
       - name: Build for scan
         uses: docker/build-push-action@53b7df96c91f9c12dcc8a07bcb9ccacbed38856a # v7.3.0
         with:
@@ -60,9 +60,8 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
-      # Gate the release on the scan: HIGH/CRITICAL findings with an available
-      # fix block the push. Unfixed upstream CVEs are reported but not fatal,
-      # so the release is never hostage to a patch that does not exist yet.
+      # Gate the release on the scan: HIGH/CRITICAL findings with an available fix block the push.
+      # Unfixed upstream CVEs are reported but not fatal, so the release is never hostage to a patch that does not exist yet.
       - name: Scan image (fail on fixable HIGH/CRITICAL)
         uses: aquasecurity/trivy-action@ed142fd0673e97e23eac54620cfb913e5ce36c25 # v0.36.0
         with:
@@ -80,8 +79,7 @@ jobs:
           sarif_file: trivy-image.sarif
           category: container-image
 
-      # sbom + provenance attach BuildKit attestations to the image manifest,
-      # so any registry consumer can inspect what went into the build.
+      # sbom & provenance attach BuildKit attestations to the image manifest, so any registry consumer can inspect what went into the build.
       - id: push
         name: Push image with SBOM and provenance
         uses: docker/build-push-action@53b7df96c91f9c12dcc8a07bcb9ccacbed38856a # v7.3.0
@@ -94,8 +92,8 @@ jobs:
           provenance: mode=max
           cache-from: type=gha
 
-      # Sigstore-signed statement binding this digest to this workflow run;
-      # verifiable with `gh attestation verify`.
+      # Sigstore-signed statement binding this digest to this workflow run.
+      # Verifiable with `gh attestation verify`.
       - name: Attest build provenance
         uses: actions/attest-build-provenance@0f67c3f4856b2e3261c31976d6725780e5e4c373 # v4.1.1
         with:

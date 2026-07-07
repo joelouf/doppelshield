@@ -5,22 +5,52 @@
 version: 2
 
 updates:
-  # JavaScript/Node.js (npm, pnpm, yarn auto-detected)
-  - package-ecosystem: "npm"
-    directory: "/"
+  # JavaScript/Node.js (npm, pnpm, yarn auto-detected).
+  - package-ecosystem: 'npm'
+    directory: '/'
     schedule:
-      interval: "daily"
-      time: "09:00"
-      timezone: "America/Los_Angeles"
+      interval: 'daily'
+      time: '09:00'
+      timezone: 'America/Los_Angeles'
     open-pull-requests-limit: 10
+    cooldown:
+      default-days: 7
     commit-message:
-      prefix: "deps"
+      prefix: 'deps'
     labels:
-      - "dependencies"
+      - 'dependencies'
     groups:
       minor-and-patch:
         patterns:
-          - "*"
+          - '*'
         update-types:
-          - "minor"
-          - "patch"
+          - 'minor'
+          - 'patch'
+    ignore:
+      # Keep @types/node on the runtime major (Node 24).
+      # Ignore major bumps.
+      - dependency-name: '@types/node'
+        update-types:
+          - 'version-update:semver-major'
+
+  - package-ecosystem: 'github-actions'
+    directory: '/'
+    schedule:
+      interval: 'weekly'
+    cooldown:
+      default-days: 7
+    commit-message:
+      prefix: 'ci'
+    labels:
+      - 'dependencies'
+
+  - package-ecosystem: 'docker'
+    directory: '/'
+    schedule:
+      interval: 'weekly'
+    cooldown:
+      default-days: 7
+    commit-message:
+      prefix: 'deps'
+    labels:
+      - 'dependencies'

@@ -30,8 +30,8 @@ function isMixedScript(scripts: Set<string>): boolean {
     return true;
 }
 
-// A malformed A-label must not abort analysis; fall back to the raw host so a
-// crafted xn-- string cannot suppress the remaining checks.
+// A malformed A-label must not abort analysis.
+// Fall back to the raw host so a crafted xn-- string cannot suppress the remaining checks.
 function safeToUnicode(host: string): string {
     try {
         return punycode.toUnicode(host);

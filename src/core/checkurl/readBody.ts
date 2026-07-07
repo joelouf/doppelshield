@@ -12,8 +12,7 @@ export class BodyReadTimeoutError extends Error {
     }
 }
 
-// Race a single read against the abort signal so a slow producer cannot hold the
-// reader open past the deadline the caller set.
+// Race a single read against the abort signal so a slow producer cannot hold the reader open past the deadline the caller set.
 function readWithSignal<T>(
     reader: ReadableStreamDefaultReader<T>,
     signal?: AbortSignal
