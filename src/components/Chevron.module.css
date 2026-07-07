@@ -1,0 +1,24 @@
+.chevron {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    color: var(--ds-accent);
+    transition: transform var(--dur-med) var(--ease-out);
+}
+
+.chevron[data-direction='right'] {
+    transform: rotate(0deg);
+}
+
+.chevron[data-direction='down'] {
+    transform: rotate(90deg);
+}
+
+.chevron[data-direction='left'] {
+    transform: rotate(180deg);
+}
+
+.chevron[data-direction='up'] {
+    transform: rotate(-90deg);
+}

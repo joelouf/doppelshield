@@ -1,0 +1,12 @@
+# Build output and caches.
+.next
+coverage
+
+# Dependency lockfile is owned by npm.
+package-lock.json
+
+# Generated data: The generator controls this file's format.
+src/core/checkurl/data/brandTargets.generated.ts
+
+# TypeScript incremental cache.
+*.tsbuildinfo

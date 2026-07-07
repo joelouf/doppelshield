@@ -1,0 +1,8 @@
+* text=auto eol=lf
+*.png binary
+*.jpg binary
+*.ico binary
+*.svg text
+*.lock linguist-generated=true
+*-lock.json linguist-generated=true
+*.generated.ts linguist-generated=true
