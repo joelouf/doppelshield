@@ -8,7 +8,7 @@ import layout from './layout.module.css';
 import { display, techno, mono } from '@/lib/fonts';
 import { SITE_URL } from '@/lib/site';
 
-const title = 'DoppelShield · URL Forensics & Homograph Scanner';
+const title = 'DoppelShield / URL Forensics & Homograph Scanner';
 const description =
     'URL forensics tool that decodes the host, flags look-alike characters, and traces the redirect chain to surface homograph attacks.';
 
@@ -16,7 +16,7 @@ export const metadata: Metadata = {
     metadataBase: new URL(SITE_URL),
     title: {
         default: title,
-        template: '%s · DoppelShield'
+        template: '%s / DoppelShield'
     },
     description,
     applicationName: 'DoppelShield',

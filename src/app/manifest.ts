@@ -2,7 +2,7 @@ import type { MetadataRoute } from 'next';
 
 export default function manifest(): MetadataRoute.Manifest {
     return {
-        name: 'DoppelShield · URL Forensics & Homograph Scanner',
+        name: 'DoppelShield / URL Forensics & Homograph Scanner',
         short_name: 'DoppelShield',
         description:
             'URL forensics tool that decodes the host, flags look-alike characters, and traces the redirect chain to surface homograph attacks.',
@@ -12,7 +12,7 @@ export default function manifest(): MetadataRoute.Manifest {
         theme_color: '#080a07',
         icons: [
             {
-                src: '/doppelshield-no-bg.png',
+                src: '/logo.png',
                 sizes: 'any',
                 type: 'image/png'
             }
