@@ -1,11 +1,11 @@
-import type { Metadata } from 'next';
+import { pageMetadata } from '@/lib/metadata';
 
-export const metadata: Metadata = {
+export const generateMetadata = pageMetadata({
     title: 'Contact',
     description:
         'Questions, a false positive, or a homograph DoppelShield missed? Get in touch.',
-    alternates: { canonical: '/contact' }
-};
+    path: '/contact'
+});
 
 export default function ContactLayout({
     children

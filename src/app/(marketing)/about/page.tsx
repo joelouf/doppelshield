@@ -1,12 +1,12 @@
-import type { Metadata } from 'next';
 import c from '@/styles/Content.module.css';
+import { pageMetadata } from '@/lib/metadata';
 
-export const metadata: Metadata = {
-    title: 'About',
+export const generateMetadata = pageMetadata({
+    title: 'What Is a Homograph Attack?',
     description:
-        'How DoppelShield catches homograph domains by decoding internationalized domain names, tracing redirects safely, and guarding against SSRF.',
-    alternates: { canonical: '/about' }
-};
+        'A homograph attack swaps Latin letters for look-alike Cyrillic or Greek characters to forge a trusted domain. How it works and how DoppelShield detects it.',
+    path: '/about'
+});
 
 const About = () => {
     return (

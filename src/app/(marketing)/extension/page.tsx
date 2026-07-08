@@ -1,14 +1,14 @@
-import type { Metadata } from 'next';
 import React from 'react';
 import Link from 'next/link';
 import c from '@/styles/Content.module.css';
+import { pageMetadata } from '@/lib/metadata';
 
-export const metadata: Metadata = {
-    title: 'Extension',
+export const generateMetadata = pageMetadata({
+    title: 'Browser Extension',
     description:
-        'A DoppelShield browser extension is in development. It will have the ability to check the links you browse for homograph domains with every click, so you do not have to check them manually.',
-    alternates: { canonical: '/extension' }
-};
+        'A DoppelShield browser extension is in development: it will check the links you browse for homograph domains on every click, no manual pasting.',
+    path: '/extension'
+});
 
 const PLANNED = [
     'Checks every link as you browse, with no manual pasting',
