@@ -36,6 +36,10 @@ updates:
       prefix: 'ci'
     labels:
       - 'dependencies'
+    groups:
+      codeql-action:
+        patterns:
+          - 'github/codeql-action*'
 
   - package-ecosystem: 'docker'
     directory: '/'
