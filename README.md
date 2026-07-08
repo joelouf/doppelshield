@@ -6,13 +6,20 @@
 
 <section id="badges" align="center">
 
+[![Mozilla Observatory](https://img.shields.io/mozilla-observatory/grade/doppelshield.com)](https://developer.mozilla.org/en-US/observatory/analyze?host=doppelshield.com)&ensp;
+[![SSL Labs](https://img.shields.io/badge/SSL_Labs-A%2B-2ea44f)](https://www.ssllabs.com/ssltest/analyze.html?d=doppelshield.com)&ensp;
 [![CI](https://github.com/joelouf/doppelshield/actions/workflows/ci.yml/badge.svg)](https://github.com/joelouf/doppelshield/actions/workflows/ci.yml)&ensp;
 [![CodeQL](https://github.com/joelouf/doppelshield/actions/workflows/codeql.yml/badge.svg)](https://github.com/joelouf/doppelshield/actions/workflows/codeql.yml)&ensp;
 [![License: Apache 2.0](https://img.shields.io/badge/license-Apache%202.0-green)](./LICENSE)&ensp;
-[![Live scanner](https://img.shields.io/badge/live-doppelshield.com-green)](https://doppelshield.com)
+<!-- [![Live scanner](https://img.shields.io/badge/live-doppelshield.com-green)](https://doppelshield.com) -->
 
 </section>
 
+<hr />
+
+<section align="center"><b><a href="https://doppelshield.com">Try it live → doppelshield.com</a></b></section>
+
+<hr />
 <br />
 
 <section id="description">
