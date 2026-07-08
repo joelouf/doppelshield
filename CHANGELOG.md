@@ -104,16 +104,16 @@ project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
   behind a saturated agent now settles at the walk deadline instead of waiting
   for a socket to free.
 - Six fixable OpenSSL (`libssl3`) advisories carried by the distroless base image
-  ahead of an upstream rebuild are recorded as `not_affected` in a machine-readable
-  OpenVEX statement (`security/vex/openssl-libssl3-2026-07.openvex.json`) that the
-  release scan now consumes, so justified, non-exploitable findings do not block
-  deploys while the gate keeps failing on every other fixable HIGH or CRITICAL. The
-  critical advisory (CVE-2026-31789) is a 32-bit-only overflow and production runs
-  64-bit; the rest are use-after-free and denial-of-service defects in OpenSSL's
-  DANE, certificate-revocation, CMS, and PKCS7 routines, none of which the
-  application's outbound TLS handshake invokes. Tracked for removal once distroless
-  ships `libssl3` 3.0.20-1~deb12u2 or later, at which point the base image digest is
-  re-pinned.
+  ahead of an upstream rebuild are documented as `not_affected` in a machine-readable
+  OpenVEX statement (`security/vex/openssl-libssl3-2026-07.openvex.json`) and enforced
+  in the release scan through a time-boxed `.trivyignore.yaml`, so justified,
+  non-exploitable findings do not block deploys while the gate keeps failing on every
+  other fixable HIGH or CRITICAL. The critical advisory (CVE-2026-31789) is a
+  32-bit-only overflow and production runs 64-bit; the rest are use-after-free and
+  denial-of-service defects in OpenSSL's DANE, certificate-revocation, CMS, and PKCS7
+  routines, none of which the application's outbound TLS handshake invokes. The
+  suppression carries a `2026-10-08` expiry and is removed, along with the base image
+  digest re-pin, once distroless ships `libssl3` 3.0.20-1~deb12u2 or later.
 
 ## [1.1.0] - 2026-07-07
 

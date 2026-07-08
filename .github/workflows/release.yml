@@ -68,7 +68,7 @@ jobs:
             --severity HIGH,CRITICAL \
             --ignore-unfixed \
             --exit-code 1 \
-            --vex security/vex/openssl-libssl3-2026-07.openvex.json \
+            --ignorefile .trivyignore.yaml \
             ghcr.io/${{ github.repository }}:scan
 
       - name: Upload scan results to code scanning
