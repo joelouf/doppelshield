@@ -81,3 +81,69 @@ resource "aws_iam_role_policy" "release_mirror" {
   role   = aws_iam_role.release_mirror.id
   policy = data.aws_iam_policy_document.release_mirror.json
 }
+
+data "aws_iam_policy_document" "deploy_assume" {
+  statement {
+    actions = ["sts:AssumeRoleWithWebIdentity"]
+
+    principals {
+      type        = "Federated"
+      identifiers = [aws_iam_openid_connect_provider.github.arn]
+    }
+
+    condition {
+      test     = "StringEquals"
+      variable = "token.actions.githubusercontent.com:aud"
+      values   = ["sts.amazonaws.com"]
+    }
+
+    condition {
+      test     = "StringEquals"
+      variable = "token.actions.githubusercontent.com:sub"
+      values   = ["repo:${var.github_repository}:environment:production"]
+    }
+  }
+}
+
+resource "aws_iam_role" "deploy" {
+  name               = "doppelshield-deploy"
+  assume_role_policy = data.aws_iam_policy_document.deploy_assume.json
+}
+
+data "aws_iam_policy_document" "deploy" {
+  statement {
+    sid = "RegisterTaskDefinition"
+    actions = [
+      "ecs:DescribeTaskDefinition",
+      "ecs:RegisterTaskDefinition",
+    ]
+    resources = ["*"]
+  }
+
+  statement {
+    sid = "RollService"
+    actions = [
+      "ecs:DescribeServices",
+      "ecs:UpdateService",
+    ]
+    resources = [aws_ecs_service.app.id]
+  }
+
+  statement {
+    sid       = "PassExecutionRole"
+    actions   = ["iam:PassRole"]
+    resources = [aws_iam_role.task_execution.arn]
+
+    condition {
+      test     = "StringEquals"
+      variable = "iam:PassedToService"
+      values   = ["ecs-tasks.amazonaws.com"]
+    }
+  }
+}
+
+resource "aws_iam_role_policy" "deploy" {
+  name   = "ecs-deploy"
+  role   = aws_iam_role.deploy.id
+  policy = data.aws_iam_policy_document.deploy.json
+}

@@ -31,6 +31,16 @@ project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
   outcome (flagged, review, clear, and the uniform SSRF-safe verdict), stored
   under `docs/screenshots/` and referenced from the architecture doc and
   documentation index.
+- Automated deployment on release (ADR-0010): a `deploy` job in the release
+  workflow, gated by a GitHub `production` environment, assumes a dedicated
+  least-privilege `doppelshield-deploy` role via OIDC (trust scoped to the
+  environment, not a branch or tag), registers a new task-definition revision
+  pinning the released digest, rolls the single ECS service, and fails if the
+  circuit breaker rolls it back. The service now ignores `task_definition`
+  changes, so Terraform owns infrastructure and the bootstrap image while the
+  pipeline owns image promotion; `terraform apply` no longer changes the running
+  image. Gated on the `AWS_DEPLOY_ROLE_ARN` repository variable, so the job
+  skips until it is configured.
 
 ### Changed
 

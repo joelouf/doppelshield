@@ -151,6 +151,7 @@ Provisioning, first-apply bootstrapping, and the private-subnet upgrade seam are
 | [0007](adr/0007-single-instance-container-topology.md)        | Single container instance behind an edge.                                                 |
 | [0008](adr/0008-aws-ecs-fargate-lean-topology.md)             | Realize that topology as ECS on Fargate behind ALB and WAF.                               |
 | [0009](adr/0009-distroless-runtime-retires-undici-finding.md) | Distroless runtime; retires the npm-vendored undici finding via OpenVEX.                  |
+| [0010](adr/0010-automated-ecs-deploy.md)                      | Automated ECS deploy on release via an environment-gated OIDC role.                       |
 
 ## Security posture
 

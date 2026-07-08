@@ -33,12 +33,32 @@ which is what the task definition pins.
 
 ## Deploy
 
-1. Pin the digest from the release (`docker buildx imagetools inspect
-ghcr.io/joelouf/doppelshield:X.Y.Z` shows it) as `image_digest` in
-   `infra/terraform.tfvars`, then `terraform plan` and `terraform apply`
-   from `infra/` (Terraform mechanics in [infra/README.md](../infra/README.md)).
-   The task definition references the ECR mirror of the same digest; the
-   release workflow fails if the mirrored digest differs from GHCR's.
+1. Deploys are automated ([ADR-0010](adr/0010-automated-ecs-deploy.md)).
+   Tagging a `vX.Y.Z` release builds, scans, publishes, and mirrors the image,
+   then the `deploy` job rolls the ECS service to that digest and waits for
+   steady state. The job runs in the GitHub `production` environment, so when
+   required reviewers are configured, approve the deployment from the workflow
+   run; it then registers a new task-definition revision, updates the service,
+   and fails if the deployment circuit breaker rolls it back. No AWS credentials
+   are used from a laptop, and `terraform apply` no longer changes the running
+   image (the service ignores `task_definition`; Terraform owns infrastructure
+   and the bootstrap image only). Manual fallback, if the pipeline is
+   unavailable, with credentials for the account:
+
+   ```bash
+   aws ecs describe-task-definition --task-definition doppelshield \
+     --query 'taskDefinition' --output json > td.json
+   ECR=<account>.dkr.ecr.us-east-2.amazonaws.com
+   jq --arg img "$ECR/doppelshield@sha256:<digest>" \
+     '(.containerDefinitions[]|select(.name=="doppelshield").image)=$img
+      | del(.taskDefinitionArn,.revision,.status,.requiresAttributes,.compatibilities,.registeredAt,.registeredBy)' \
+     td.json > new.json
+   ARN=$(aws ecs register-task-definition --cli-input-json file://new.json \
+     --query 'taskDefinition.taskDefinitionArn' --output text)
+   aws ecs update-service --cluster doppelshield --service doppelshield --task-definition "$ARN"
+   aws ecs wait services-stable --cluster doppelshield --services doppelshield
+   ```
+
 2. Set the environment (see `.env.example` for every tunable). The two that
    are deployment-critical:
    - `NEXT_PUBLIC_SITE_URL`: **build-time** value, baked into the published
@@ -90,13 +110,22 @@ done   # expect 429s near the configured limit despite the rotating header
 
 ## Rollback
 
-Point `image_digest` in `infra/terraform.tfvars` back at the previous digest
-and `terraform apply`; ECS also keeps numbered task-definition revisions as
-a second revert path, and the deployment circuit breaker rolls a failed
-deploy back automatically. There is no database and no migration state; the
-only state lost is in-memory rate-limit counters, which reset harmlessly.
-Keep the last two release digests noted in `terraform.tfvars` comments for a
-one-step revert.
+A deploy that never becomes healthy is rolled back automatically: the ECS
+deployment circuit breaker reverts to the last good task-definition revision,
+and the `deploy` job then fails (it checks that the live revision is the one it
+just registered). To roll back a deploy that went out but is bad, re-run the
+release `deploy` job for the previous `vX.Y.Z` tag (Actions, the prior release
+run, Re-run jobs), or revert directly to a prior revision, which ECS keeps
+numbered:
+
+```bash
+aws ecs update-service --cluster doppelshield --service doppelshield \
+  --task-definition doppelshield:<previous-revision>
+aws ecs wait services-stable --cluster doppelshield --services doppelshield
+```
+
+There is no database and no migration state; the only state lost is in-memory
+rate-limit counters, which reset harmlessly.
 
 ## Emergency platform switch
 
