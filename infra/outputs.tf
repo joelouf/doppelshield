@@ -24,3 +24,8 @@ output "release_mirror_role_arn" {
   description = "Set as the AWS_RELEASE_ROLE_ARN repository variable so the release workflow can mirror images."
   value       = aws_iam_role.release_mirror.arn
 }
+
+output "deploy_role_arn" {
+  description = "Set as the AWS_DEPLOY_ROLE_ARN repository variable so the release workflow can roll the ECS service. Assumable only from the GitHub production environment."
+  value       = aws_iam_role.deploy.arn
+}

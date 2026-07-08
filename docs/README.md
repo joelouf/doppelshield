@@ -26,6 +26,7 @@ Architecture decision records in [adr/](adr/), all accepted:
 | [0007](adr/0007-single-instance-container-topology.md)        | Single container instance behind an edge.                        |
 | [0008](adr/0008-aws-ecs-fargate-lean-topology.md)             | ECS on Fargate behind ALB and WAF realizes that topology.        |
 | [0009](adr/0009-distroless-runtime-retires-undici-finding.md) | Distroless runtime; base-image finding retired via OpenVEX.      |
+| [0010](adr/0010-automated-ecs-deploy.md)                      | Automated ECS deploy on release; Terraform owns infrastructure.  |
 
 New decisions copy [adr/0000-template.md](adr/0000-template.md) to the next number.
 

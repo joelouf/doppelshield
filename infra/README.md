@@ -73,18 +73,32 @@ terraform output release_mirror_role_arn
 #   - AWS_RELEASE_ROLE_ARN = <ARN>
 ```
 
-## Deploying a digest
-
-Every deploy is the same change: set `image_digest` in `terraform.tfvars` to
-the release digest, then
+Then wire the automated deploy ([ADR-0010](../docs/adr/0010-automated-ecs-deploy.md)).
+Create a GitHub `production` environment (the deploy role trusts only that
+environment) and set the deploy role variable:
 
 ```bash
-terraform plan
-terraform apply
+terraform output deploy_role_arn
+# GitHub > repo Settings > Environments > New environment: "production"
+#   - add Required reviewers (this is the deploy approval gate)
+# GitHub > repo Settings > Secrets and variables > Actions > Variables:
+#   - AWS_DEPLOY_ROLE_ARN = <ARN>
 ```
 
-Rollback is the previous digest and `terraform apply` again; ECS also keeps
-numbered task-definition revisions as a second path.
+Until `AWS_DEPLOY_ROLE_ARN` is set the deploy job skips, and the service keeps
+running whatever the last apply or deploy put on it.
+
+## Deploying a digest
+
+Deploys run through the release pipeline, not Terraform
+([ADR-0010](../docs/adr/0010-automated-ecs-deploy.md)). Tagging a `vX.Y.Z`
+release publishes and mirrors the image, then the workflow's `deploy` job rolls
+the ECS service to that digest. The service has `lifecycle.ignore_changes =
+[task_definition]`, so `terraform apply` no longer changes the running image;
+`image_digest` in `terraform.tfvars` is the bootstrap image for the first apply
+only. Terraform still owns everything else here (ALB, WAF, ECS service, IAM,
+alarms), so keep applying it for infrastructure changes. The manual deploy and
+rollback CLIs live in [docs/runbook.md](../docs/runbook.md).
 
 ## The upgrade seam
 

@@ -135,3 +135,62 @@ jobs:
             "$ECR_REGISTRY/doppelshield:$VERSION" \
             --format '{{json .Manifest.Digest}}' | tr -d '"')
           test "$mirrored" = "$DIGEST"
+
+  deploy:
+    needs: [publish, mirror]
+    if: vars.AWS_DEPLOY_ROLE_ARN != '' && needs.publish.outputs.version != ''
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    environment:
+      name: production
+      url: https://doppelshield.com
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - uses: aws-actions/configure-aws-credentials@517a711dbcd0e402f90c77e7e2f81e849156e31d # v6.2.2
+        with:
+          role-to-assume: ${{ vars.AWS_DEPLOY_ROLE_ARN }}
+          aws-region: us-east-2
+
+      - name: Roll the ECS service to the released digest
+        env:
+          DIGEST: ${{ needs.publish.outputs.digest }}
+          REGION: us-east-2
+          CLUSTER: doppelshield
+          SERVICE: doppelshield
+          FAMILY: doppelshield
+          CONTAINER: doppelshield
+        run: |
+          set -euo pipefail
+          account="$(aws sts get-caller-identity --query Account --output text)"
+          image="${account}.dkr.ecr.${REGION}.amazonaws.com/doppelshield@${DIGEST}"
+          echo "Deploying image ${image}"
+
+          aws ecs describe-task-definition --task-definition "$FAMILY" \
+            --query 'taskDefinition' --output json > current-taskdef.json
+
+          jq --arg img "$image" --arg name "$CONTAINER" '
+            (.containerDefinitions[] | select(.name == $name) | .image) = $img
+            | del(.taskDefinitionArn, .revision, .status, .requiresAttributes,
+                  .compatibilities, .registeredAt, .registeredBy, .deregisteredAt)
+          ' current-taskdef.json > new-taskdef.json
+
+          new_arn="$(aws ecs register-task-definition \
+            --cli-input-json file://new-taskdef.json \
+            --query 'taskDefinition.taskDefinitionArn' --output text)"
+          echo "Registered ${new_arn}"
+
+          aws ecs update-service --cluster "$CLUSTER" --service "$SERVICE" \
+            --task-definition "$new_arn" >/dev/null
+          echo "Rolling deployment; waiting for the service to reach steady state..."
+          aws ecs wait services-stable --cluster "$CLUSTER" --services "$SERVICE"
+
+          live_arn="$(aws ecs describe-services --cluster "$CLUSTER" --services "$SERVICE" \
+            --query 'services[0].deployments[?status==`PRIMARY`].taskDefinition | [0]' \
+            --output text)"
+          if [ "$live_arn" != "$new_arn" ]; then
+            echo "::error::Service did not converge on ${new_arn} (live: ${live_arn}); the deployment circuit breaker rolled it back."
+            exit 1
+          fi
+          echo "Deployed and stable on ${new_arn}"
