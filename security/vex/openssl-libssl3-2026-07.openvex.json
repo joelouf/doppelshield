@@ -1,0 +1,118 @@
+{
+  "@context": "https://openvex.dev/ns/v0.2.0",
+  "@id": "https://doppelshield.com/.well-known/vex/openssl-libssl3-2026-07",
+  "author": "DoppelShield maintainers (https://github.com/joelouf/doppelshield)",
+  "role": "Project maintainers",
+  "timestamp": "2026-07-08T00:00:00Z",
+  "version": 1,
+  "statements": [
+    {
+      "vulnerability": {
+        "name": "CVE-2026-31789",
+        "@id": "https://nvd.nist.gov/vuln/detail/CVE-2026-31789",
+        "description": "openssl: heap buffer overflow on 32-bit systems when parsing a large X.509 certificate (fixed in libssl3 3.0.19-1~deb12u2)."
+      },
+      "products": [
+        {
+          "@id": "pkg:oci/doppelshield",
+          "subcomponents": [{ "@id": "pkg:deb/debian/libssl3" }]
+        }
+      ],
+      "status": "not_affected",
+      "justification": "vulnerable_code_cannot_be_controlled_by_adversary",
+      "impact_statement": "The overflow requires the 32-bit build of OpenSSL. The production image runs on 64-bit Fargate (linux/amd64 and arm64), where the size arithmetic that overflows on 32-bit does not, so no attacker-supplied certificate can drive the code into the faulting state. The SSRF-guarded prober does parse certificates presented by scanned sites, but only on this 64-bit runtime.",
+      "action_statement": "Retire this statement once Google Distroless publishes a nodejs24-debian12 rebuild containing libssl3 3.0.20-1~deb12u2 or later, then re-pin the base image digest in Dockerfile and delete this file.",
+      "action_statement_timestamp": "2026-07-08T00:00:00Z"
+    },
+    {
+      "vulnerability": {
+        "name": "CVE-2026-28387",
+        "@id": "https://nvd.nist.gov/vuln/detail/CVE-2026-28387",
+        "description": "openssl: use-after-free in DANE TLSA authentication (fixed in libssl3 3.0.19-1~deb12u2)."
+      },
+      "products": [
+        {
+          "@id": "pkg:oci/doppelshield",
+          "subcomponents": [{ "@id": "pkg:deb/debian/libssl3" }]
+        }
+      ],
+      "status": "not_affected",
+      "justification": "vulnerable_code_not_in_execute_path",
+      "impact_statement": "DoppelShield reaches OpenSSL only through the Node.js TLS client used by the SSRF-guarded prober for outbound HTTPS. That path performs a standard handshake and never enables DANE TLSA authentication, so the vulnerable routine is not called.",
+      "action_statement": "Retire this statement once Google Distroless publishes a nodejs24-debian12 rebuild containing libssl3 3.0.20-1~deb12u2 or later, then re-pin the base image digest in Dockerfile and delete this file.",
+      "action_statement_timestamp": "2026-07-08T00:00:00Z"
+    },
+    {
+      "vulnerability": {
+        "name": "CVE-2026-28388",
+        "@id": "https://nvd.nist.gov/vuln/detail/CVE-2026-28388",
+        "description": "openssl: NULL pointer dereference (denial of service) in certificate revocation processing (fixed in libssl3 3.0.19-1~deb12u2)."
+      },
+      "products": [
+        {
+          "@id": "pkg:oci/doppelshield",
+          "subcomponents": [{ "@id": "pkg:deb/debian/libssl3" }]
+        }
+      ],
+      "status": "not_affected",
+      "justification": "vulnerable_code_not_in_execute_path",
+      "impact_statement": "The prober's outbound TLS handshake does not enable certificate revocation (CRL or delta-CRL) checking, so the vulnerable routine is not called.",
+      "action_statement": "Retire this statement once Google Distroless publishes a nodejs24-debian12 rebuild containing libssl3 3.0.20-1~deb12u2 or later, then re-pin the base image digest in Dockerfile and delete this file.",
+      "action_statement_timestamp": "2026-07-08T00:00:00Z"
+    },
+    {
+      "vulnerability": {
+        "name": "CVE-2026-28389",
+        "@id": "https://nvd.nist.gov/vuln/detail/CVE-2026-28389",
+        "description": "openssl: denial of service in CMS processing (fixed in libssl3 3.0.19-1~deb12u2)."
+      },
+      "products": [
+        {
+          "@id": "pkg:oci/doppelshield",
+          "subcomponents": [{ "@id": "pkg:deb/debian/libssl3" }]
+        }
+      ],
+      "status": "not_affected",
+      "justification": "vulnerable_code_not_in_execute_path",
+      "impact_statement": "The application does not process Cryptographic Message Syntax (CMS/S-MIME) data, so the CMS routines are not called.",
+      "action_statement": "Retire this statement once Google Distroless publishes a nodejs24-debian12 rebuild containing libssl3 3.0.20-1~deb12u2 or later, then re-pin the base image digest in Dockerfile and delete this file.",
+      "action_statement_timestamp": "2026-07-08T00:00:00Z"
+    },
+    {
+      "vulnerability": {
+        "name": "CVE-2026-28390",
+        "@id": "https://nvd.nist.gov/vuln/detail/CVE-2026-28390",
+        "description": "openssl: NULL pointer dereference (denial of service) in CMS processing (fixed in libssl3 3.0.19-1~deb12u2)."
+      },
+      "products": [
+        {
+          "@id": "pkg:oci/doppelshield",
+          "subcomponents": [{ "@id": "pkg:deb/debian/libssl3" }]
+        }
+      ],
+      "status": "not_affected",
+      "justification": "vulnerable_code_not_in_execute_path",
+      "impact_statement": "The application does not process Cryptographic Message Syntax (CMS/S-MIME) data, so the CMS routines are not called.",
+      "action_statement": "Retire this statement once Google Distroless publishes a nodejs24-debian12 rebuild containing libssl3 3.0.20-1~deb12u2 or later, then re-pin the base image digest in Dockerfile and delete this file.",
+      "action_statement_timestamp": "2026-07-08T00:00:00Z"
+    },
+    {
+      "vulnerability": {
+        "name": "CVE-2026-45447",
+        "@id": "https://nvd.nist.gov/vuln/detail/CVE-2026-45447",
+        "description": "openssl: heap use-after-free in PKCS7_verify() (fixed in libssl3 3.0.20-1~deb12u2)."
+      },
+      "products": [
+        {
+          "@id": "pkg:oci/doppelshield",
+          "subcomponents": [{ "@id": "pkg:deb/debian/libssl3" }]
+        }
+      ],
+      "status": "not_affected",
+      "justification": "vulnerable_code_not_in_execute_path",
+      "impact_statement": "The application does not verify PKCS7/S-MIME structures, so PKCS7_verify is not called.",
+      "action_statement": "Retire this statement once Google Distroless publishes a nodejs24-debian12 rebuild containing libssl3 3.0.20-1~deb12u2 or later, then re-pin the base image digest in Dockerfile and delete this file.",
+      "action_statement_timestamp": "2026-07-08T00:00:00Z"
+    }
+  ]
+}

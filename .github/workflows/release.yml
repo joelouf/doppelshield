@@ -49,22 +49,26 @@ jobs:
         with:
           context: .
           load: true
-          tags: scan-target:${{ github.sha }}
+          tags: ghcr.io/${{ github.repository }}:scan
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
       - name: Scan image (report to code scanning)
         uses: aquasecurity/trivy-action@ed142fd0673e97e23eac54620cfb913e5ce36c25 # v0.36.0
+        env:
+          TRIVY_VEX: security/vex/openssl-libssl3-2026-07.openvex.json
         with:
-          image-ref: scan-target:${{ github.sha }}
+          image-ref: ghcr.io/${{ github.repository }}:scan
           format: sarif
           output: trivy-image.sarif
           exit-code: '0'
 
       - name: Scan image (fail on fixable HIGH/CRITICAL)
         uses: aquasecurity/trivy-action@ed142fd0673e97e23eac54620cfb913e5ce36c25 # v0.36.0
+        env:
+          TRIVY_VEX: security/vex/openssl-libssl3-2026-07.openvex.json
         with:
-          image-ref: scan-target:${{ github.sha }}
+          image-ref: ghcr.io/${{ github.repository }}:scan
           format: table
           severity: HIGH,CRITICAL
           ignore-unfixed: true
