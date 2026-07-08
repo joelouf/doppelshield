@@ -55,8 +55,6 @@ jobs:
 
       - name: Scan image (report to code scanning)
         uses: aquasecurity/trivy-action@ed142fd0673e97e23eac54620cfb913e5ce36c25 # v0.36.0
-        env:
-          TRIVY_VEX: security/vex/openssl-libssl3-2026-07.openvex.json
         with:
           image-ref: ghcr.io/${{ github.repository }}:scan
           format: sarif
@@ -64,16 +62,14 @@ jobs:
           exit-code: '0'
 
       - name: Scan image (fail on fixable HIGH/CRITICAL)
-        uses: aquasecurity/trivy-action@ed142fd0673e97e23eac54620cfb913e5ce36c25 # v0.36.0
-        env:
-          TRIVY_VEX: security/vex/openssl-libssl3-2026-07.openvex.json
-        with:
-          image-ref: ghcr.io/${{ github.repository }}:scan
-          format: table
-          severity: HIGH,CRITICAL
-          ignore-unfixed: true
-          exit-code: '1'
-          skip-setup-trivy: true
+        run: |
+          trivy image \
+            --cache-dir "$GITHUB_WORKSPACE/.cache/trivy" \
+            --severity HIGH,CRITICAL \
+            --ignore-unfixed \
+            --exit-code 1 \
+            --vex security/vex/openssl-libssl3-2026-07.openvex.json \
+            ghcr.io/${{ github.repository }}:scan
 
       - name: Upload scan results to code scanning
         if: always()
