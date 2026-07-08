@@ -22,7 +22,7 @@ const ON_DANGER = '#190503';
 
 const PW = 1072;
 const PH = 312;
-const N = 20; // notch size
+const NOTCH = 20;
 const PAD = 58;
 
 const SHIELD_PATH =
@@ -122,7 +122,7 @@ export default async function Image() {
                         }}
                     >
                         <polygon
-                            points={`${N},0 ${PW},0 ${PW},${PH - N} ${PW - N},${PH} 0,${PH} 0,${N}`}
+                            points={`${NOTCH},0 ${PW},0 ${PW},${PH - NOTCH} ${PW - NOTCH},${PH} 0,${PH} 0,${NOTCH}`}
                             fill={SURFACE}
                             stroke={BORDER_BRIGHT}
                             strokeWidth={1.5}
