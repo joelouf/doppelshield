@@ -46,17 +46,30 @@ export function coherentDeadline(
     return Math.max(deadlineMs, timeoutMs);
 }
 
-function portsEnv(
+export function portsEnv(
     value: string | undefined,
-    fallback: number[]
+    fallback: number[],
+    name?: string
 ): ReadonlySet<number> {
     if (!value) return new Set(fallback);
-    const parsed = value
+    const entries = value
         .split(',')
-        .map((p) => Number(p.trim()))
+        .map((p) => p.trim())
+        .filter((p) => p !== '');
+    const parsed = entries
+        .map((p) => Number(p))
         .filter((p) => Number.isInteger(p) && p > 0 && p <= 65535);
+    const result = new Set(parsed.length > 0 ? parsed : fallback);
 
-    return new Set(parsed.length > 0 ? parsed : fallback);
+    if (name && (entries.length === 0 || parsed.length < entries.length)) {
+        logger.warn('config_invalid_env', {
+            name,
+            value,
+            applied: [...result].join(',')
+        });
+    }
+
+    return result;
 }
 
 export function headerEnv(value: string | undefined): string {
@@ -102,7 +115,11 @@ export const CONFIG = {
         false,
         'CHECKURL_MAX_URL_LENGTH'
     ),
-    allowedPorts: portsEnv(process.env.CHECKURL_ALLOWED_PORTS, [80, 443]),
+    allowedPorts: portsEnv(
+        process.env.CHECKURL_ALLOWED_PORTS,
+        [80, 443],
+        'CHECKURL_ALLOWED_PORTS'
+    ),
     userAgent:
         process.env.CHECKURL_USER_AGENT ??
         'DoppelShieldBot/1.0 (+https://doppelshield.com/bot)',

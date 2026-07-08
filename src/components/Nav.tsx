@@ -61,10 +61,7 @@ const Nav = () => {
                 aria-label='DoppelShield home'
                 onClick={requestScannerReset}
             >
-                <span className={nav.mark} aria-hidden>
-                    <span className={nav.markPrimary} />
-                    <span className={nav.markEcho} />
-                </span>
+                <span className={nav.mark} aria-hidden />
                 <span className={nav.word}>
                     DOPPEL<span className={nav.wordEcho}>SHIELD</span>
                 </span>

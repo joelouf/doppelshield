@@ -11,7 +11,5 @@ tags:
   - css
 description: URL forensics tool that decodes the host, flags look-alike characters, and traces the redirect chain to surface homograph attacks.
 status: completed
-archetype: node-ts-app
-stage: 2
 github: https://github.com/joelouf/doppelshield
-demo: https://doppelshield.netlify.app
+demo: https://doppelshield.com

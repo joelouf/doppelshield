@@ -62,8 +62,8 @@ workflow is the only deployable artifact.
 Both review findings close by construction: the limits are real because
 exactly one process enforces them, and the IP-keying header has exactly one
 writer. The zero-external-state property is what makes the emergency-switch
-requirement cheap — a migration is "pull the same digest, set the same
-environment variables, move DNS" — and it keeps local development identical to
+requirement cheap: a migration is "pull the same digest, set the same
+environment variables, move DNS". It also keeps local development identical to
 production.
 
 The single instance is an accepted availability trade-off: a crash means
@@ -74,7 +74,7 @@ portfolio scanner; it would not be for a paid service, and the escape path
 
 The edge configuration is the least portable layer. Cloudflare rules do not
 export to AWS WAF or any other product, so a platform switch re-authors the
-edge rate limit and origin lockdown by hand — accepted, since the in-process
+edge rate limit and origin lockdown by hand; accepted, since the in-process
 limiter covers the gap during a transition and the rules are few. The
 operational procedure, including verification that the edge overwrites the
 trusted header, lives in docs/runbook.md.

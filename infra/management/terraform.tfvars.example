@@ -1,0 +1,9 @@
+alert_email = "you@example.com"
+
+anomaly_monitor_arn = "arn:aws:ce::<account-id>:anomalymonitor/<id>"
+
+lab_account_id   = "<lab-account-id>"
+sandbox_ou_id    = "<sandbox-ou-id>"
+production_ou_id = "<production-ou-id>"
+
+enforce_on_production = false

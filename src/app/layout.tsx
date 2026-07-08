@@ -8,7 +8,7 @@ import layout from './layout.module.css';
 import { display, techno, mono } from '@/lib/fonts';
 import { SITE_URL } from '@/lib/site';
 
-const title = 'DoppelShield / URL Forensics & Homograph Scanner';
+const title = 'DoppelShield / URL Forensics & Homograph Detection';
 const description =
     'URL forensics tool that decodes the host, flags look-alike characters, and traces the redirect chain to surface homograph attacks.';
 
@@ -42,8 +42,6 @@ export default async function RootLayout({
 }: {
     children: React.ReactNode;
 }) {
-    // Force dynamic rendering so each document is built per request.
-    // A prerendered shell would carry a stale nonce that the live CSP rejects.
     await connection();
     return (
         <html

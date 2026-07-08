@@ -1,7 +1,7 @@
 DoppelShield
 Copyright (c) 2026 Joe Maalouf
 
-This product is licensed under the MIT License (see LICENSE).
+This product is licensed under the Apache License, Version 2.0 (see LICENSE).
 
 Third-party data attribution
 ----------------------------
@@ -22,3 +22,15 @@ The generator also accepts equivalent rankings in place of Majestic Million:
 
 Each source remains under its own license and terms; this notice provides the
 attribution those terms request.
+
+Third-party fonts
+-----------------
+
+The OpenGraph image route (src/app/opengraph-image.tsx) embeds two fonts,
+redistributed here under the SIL Open Font License 1.1
+(https://openfontlicense.org):
+
+  - Chakra Petch (ChakraPetch-Bold.ttf), by Cadson Demak:
+    https://fonts.google.com/specimen/Chakra+Petch
+  - Electrolize (Electrolize-Regular.ttf), by Font Diner:
+    https://fonts.google.com/specimen/Electrolize

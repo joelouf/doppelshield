@@ -1,9 +1,13 @@
 # Deployment runbook
 
 Operational procedures for DoppelShield's production topology: one container
-instance behind an edge proxy, per [ADR-0007](adr/0007-single-instance-container-topology.md).
-The deployable artifact is the image the release workflow publishes to
-`ghcr.io/joelouf/doppelshield` — deploy by digest, never by mutable tag.
+instance behind an edge proxy, per [ADR-0007](adr/0007-single-instance-container-topology.md),
+realized as a Fargate task behind an ALB with AWS WAF, per
+[ADR-0008](adr/0008-aws-ecs-fargate-lean-topology.md). The deployable
+artifact is the image the release workflow publishes to
+`ghcr.io/joelouf/doppelshield`. Deploy by digest, never by mutable tag. On
+version tags the workflow also mirrors the image digest-identical into ECR,
+which is what the task definition pins.
 
 ## Release
 
@@ -19,29 +23,45 @@ The deployable artifact is the image the release workflow publishes to
    gh attestation verify oci://ghcr.io/joelouf/doppelshield:X.Y.Z --owner joelouf
    ```
 
+   A version is released once, never re-cut: the ECR repository is
+   immutable-tagged, and a rebuild produces a new digest (the provenance
+   attestation embeds run metadata), so re-pushing an existing tag fails the
+   mirror job with `ImageTagAlreadyExistsException`. Ship a fix as a new patch
+   version. To genuinely replace one, first
+   `aws ecr batch-delete-image --repository-name doppelshield --image-ids imageTag=X.Y.Z`,
+   then re-run.
+
 ## Deploy
 
 1. Pin the digest from the release (`docker buildx imagetools inspect
-ghcr.io/joelouf/doppelshield:X.Y.Z` shows it) and point the host at
-   `ghcr.io/joelouf/doppelshield@sha256:…`.
+ghcr.io/joelouf/doppelshield:X.Y.Z` shows it) as `image_digest` in
+   `infra/terraform.tfvars`, then `terraform plan` and `terraform apply`
+   from `infra/` (Terraform mechanics in [infra/README.md](../infra/README.md)).
+   The task definition references the ECR mirror of the same digest; the
+   release workflow fails if the mirrored digest differs from GHCR's.
 2. Set the environment (see `.env.example` for every tunable). The two that
    are deployment-critical:
-   - `NEXT_PUBLIC_SITE_URL` — **build-time** value, baked into the published
+   - `NEXT_PUBLIC_SITE_URL`: **build-time** value, baked into the published
      image via the workflow's default build arg. A different public domain
      requires rebuilding with `--build-arg NEXT_PUBLIC_SITE_URL=…`.
-   - `CHECKURL_TRUSTED_IP_HEADER` — the header the edge sets:
-     `cf-connecting-ip` (Cloudflare), `x-real-ip` (nginx),
-     `x-forwarded-for` (AWS ALB/App Runner; safe because ALB appends and
-     `resolveClientKey` reads the rightmost hop).
-3. Health checks: point the platform's probe (and any uptime monitor) at
-   `GET /api/health`. The image's own HEALTHCHECK already uses it.
-4. Edge configuration (Cloudflare):
-   - Proxy the DNS record (orange cloud); TLS mode Full (strict).
-   - Rate-limiting rule on `POST /api/checkUrl` as the global cap; the
-     in-process limiter remains as defense-in-depth.
-   - Lock the origin to Cloudflare's IP ranges (host firewall or Cloudflare
-     Tunnel) so the trusted-header contract cannot be bypassed by a direct
-     connection to the origin.
+   - `CHECKURL_TRUSTED_IP_HEADER`: the header the edge sets:
+     `x-forwarded-for` (AWS ALB, the production edge; safe because the ALB
+     appends and `resolveClientKey` reads the rightmost hop),
+     `cf-connecting-ip` (Cloudflare), `x-real-ip` (nginx). The task
+     definition in `infra/ecs.tf` sets the production value.
+3. Health checks: the ALB target group and the task-definition probe both
+   target `GET /api/health`. ECS ignores the image's own HEALTHCHECK, which
+   is why the task definition declares its twin.
+4. Edge configuration (AWS, per ADR-0008; expressed in `infra/`, not the console):
+   - TLS terminates at the ALB with the ACM certificate; port 80 only
+     redirects. The Cloudflare DNS records stay gray cloud (DNS only) so
+     exactly one edge writes headers.
+   - The WAF rate-based rule caps `POST /api/checkUrl` per source IP at
+     roughly 5x the in-process limit; the in-process limiter remains the
+     precise per-client enforcer (defense-in-depth).
+   - The origin lock is the task security group admitting port 3000 only by
+     reference to the ALB security group, so the trusted-header contract
+     cannot be bypassed by a direct connection to the task.
 
 ## Post-deploy verification
 
@@ -56,22 +76,27 @@ curl -s https://<domain>/api/health   # {"status":"ok"}
 curl -s -X POST https://<domain>/api/checkUrl \
   -H 'content-type: application/json' -d '{"url":"https://example.com"}'
 
-# 3. Header-spoof test: a forged client-IP header must NOT reach the app.
-# Send bursts with a spoofed header; if rotation defeats the 429, the edge is
-# not overwriting the trusted header — stop and fix the edge config.
+# 3. Header-spoof test: forged client-IP entries must NOT defeat rate limiting.
+# The ALB appends the real client address to x-forwarded-for, so spoofed
+# values pile up leftward and resolveClientKey reads the rightmost,
+# edge-attested hop. If rotation defeats the 429, the edge is not appending
+# as expected; stop and fix the edge config.
 for i in $(seq 1 25); do
   curl -s -o /dev/null -w '%{http_code}\n' -X POST https://<domain>/api/checkUrl \
-    -H 'content-type: application/json' -H "cf-connecting-ip: 203.0.113.$i" \
+    -H 'content-type: application/json' -H "x-forwarded-for: 203.0.113.$i" \
     -d '{"url":"https://example.com"}'
 done   # expect 429s near the configured limit despite the rotating header
 ```
 
 ## Rollback
 
-Point the host back at the previous image digest and redeploy. There is no
-database and no migration state; the only state lost is in-memory rate-limit
-counters, which reset harmlessly. Keep the last two release digests noted in
-the deploy tooling/host config for a one-step revert.
+Point `image_digest` in `infra/terraform.tfvars` back at the previous digest
+and `terraform apply`; ECS also keeps numbered task-definition revisions as
+a second revert path, and the deployment circuit breaker rolls a failed
+deploy back automatically. There is no database and no migration state; the
+only state lost is in-memory rate-limit counters, which reset harmlessly.
+Keep the last two release digests noted in `terraform.tfvars` comments for a
+one-step revert.
 
 ## Emergency platform switch
 
@@ -82,11 +107,13 @@ is configuration work:
 2. Set the same environment variables; update `CHECKURL_TRUSTED_IP_HEADER` if
    the edge changes (see the table in step 2 above).
 3. Re-author the edge layer (rate-limit rule, origin lockdown) on the new
-   provider — edge rules are the one non-portable layer (ADR-0007).
+   provider; edge rules are the one non-portable layer (ADR-0007).
 4. Run the post-deploy verification, then move DNS.
 
-AWS mapping, if that switch is ever exercised: App Runner or ECS Fargate run
-the image unchanged; stdout JSON logs land in CloudWatch via the `awslogs`
-driver; the ALB/App Runner health check targets `/api/health`;
-`CHECKURL_TRUSTED_IP_HEADER=x-forwarded-for`; add an ECR login/tag step to the
-release workflow (OIDC-federated role, no static keys) to mirror the image.
+Cloudflare mapping, if that switch is ever exercised: any container host
+runs the image unchanged behind proxied DNS (orange cloud, TLS mode Full
+(strict)); `CHECKURL_TRUSTED_IP_HEADER=cf-connecting-ip`; seal the origin
+with a Cloudflare Tunnel (or a host firewall on Cloudflare's published IP
+ranges). Note the free plan's rate rules match path only, per IP, over a
+fixed 10-second window (no HTTP method matching), so the in-process limiter
+carries more of the enforcement there.

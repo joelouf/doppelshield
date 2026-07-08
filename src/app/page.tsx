@@ -4,17 +4,13 @@ import { type MouseEvent, useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import { LinkArrow, linkArrowHost } from '@/components/LinkArrow';
 import type { CheckResult, HomographEvidence } from '@/core/checkurl/types';
-import { ScanReport, type ReportFinding } from '@/components/ScanReport';
+import { ScanReport } from '@/components/ScanReport';
 import { UrlDisplay } from '@/components/UrlDisplay';
 import { splitUrl } from '@/lib/urlDisplay';
 import { toParseableUrl } from '@/lib/url';
 import { SCANNER_RESET_EVENT } from '@/lib/scannerReset';
 import { verdictFor } from '@/lib/result/verdict';
-import {
-    findingLabel,
-    findingTone,
-    FINDING_DETAIL
-} from '@/lib/result/findings';
+import { buildFindings } from '@/lib/result/findings';
 import { highlightTones } from '@/lib/highlight';
 import { transportPosture, type TransportState } from '@/lib/result/transport';
 import s from './page.module.css';
@@ -56,8 +52,6 @@ function looksScannable(input: string): boolean {
     return /[.:]/.test(input) || /\P{ASCII}/u.test(input);
 }
 
-// Visually-hidden style for the persistent verdict announcer.
-// Defined inline so the live region can sit in page.tsx (outside the report's remount boundary) without depending on a class from the report's own stylesheet.
 const SR_ONLY: React.CSSProperties = {
     position: 'absolute',
     width: 1,
@@ -107,7 +101,6 @@ export default function HomePage() {
     const scan = async (override?: string) => {
         const target = (override ?? url).trim();
         if (target === '' || phase === 'scanning') return;
-        // Generation token: A later scan bumps this, so every async path below bails when runRef has moved on and a stale response cannot overwrite the current result.
         const run = ++runRef.current;
         if (override !== undefined) setUrl(override);
         setPhase('scanning');
@@ -131,12 +124,9 @@ export default function HomePage() {
         }
         const controller = new AbortController();
         controllerRef.current = controller;
-        // Client-side ceiling above the server maxDuration so a hung request resolves to the uniform error state rather than spinning forever.
         const timeout = setTimeout(() => controller.abort(), 12000);
         let data: CheckResult;
         try {
-            // Floor the perceived scan time so a near-instant response still reads as deliberate analysis rather than a flicker.
-            // The delay races the fetch, it does not add to it.
             const [res] = await Promise.all([
                 fetch('/api/checkUrl', {
                     method: 'POST',
@@ -198,9 +188,6 @@ export default function HomePage() {
     const verdict = result
         ? verdictFor(result, homograph, glyphs.length)
         : null;
-    // Text for the persistent live region.
-    // Empty until a verdict exists so the region ships pre-mounted and silent.
-    // Updating it in place (rather than through the report's keyed remount) is what NVDA and VoiceOver register as a new announcement.
     const announcement = verdict
         ? `${verdict.label}.${verdict.note ? ` ${verdict.note}` : ''}`
         : '';
@@ -210,13 +197,7 @@ export default function HomePage() {
         scanned,
         verdict?.tone === 'flagged' ? 'danger' : 'caution'
     );
-    const findings: ReportFinding[] = warnings
-        .filter((w) => w.code !== 'https_downgrade')
-        .map((w) => ({
-            label: findingLabel(w.code, glyphs[0]?.script),
-            tone: findingTone(w.code),
-            detail: FINDING_DETAIL[w.code] ?? ''
-        }));
+    const findings = buildFindings(warnings, glyphs[0]?.script);
 
     const decodedHost = homograph?.decodedHost;
     const nameHost = decodedHost ?? (scanned ? hostOf(scanned) : '');
@@ -226,8 +207,6 @@ export default function HomePage() {
         homograph.asciiHost !== homograph.decodedHost
             ? homograph.asciiHost
             : undefined;
-    // finalUrl is present only on a clean reach.
-    // The uniform error path omits it, so blocked and unreachable hosts both render as not reached and the UI never discloses which one it was.
     const reached = !!result && !result.error && !!result.finalUrl;
     const headStatusCode =
         reached && result?.status ? result.status : undefined;
@@ -347,10 +326,6 @@ export default function HomePage() {
                 data-chunk='2'
                 style={{ ['--ci']: 2 } as React.CSSProperties}
             >
-                {/* Persistent verdict announcer. */}
-                {/* It lives outside the key={scanSeq} report below, which remounts every scan. */}
-                {/* A remounted live region that mounts already holding its text is often skipped by NVDA and VoiceOver. */}
-                {/* Keeping one region mounted and only swapping its text is what gets announced. */}
                 <div role='status' aria-live='polite' style={SR_ONLY}>
                     {announcement}
                 </div>

@@ -21,7 +21,10 @@ const Footer = () => {
                             aria-label='DoppelShield home'
                         >
                             <span className={footer.mark} aria-hidden />
-                            <span className={footer.word}>DOPPELSHIELD</span>
+                            <span className={footer.word}>
+                                DOPPEL
+                                <span className={footer.wordEcho}>SHIELD</span>
+                            </span>
                         </Link>
                         <p className={footer.tagline}>
                             Unmask deceptive domains.

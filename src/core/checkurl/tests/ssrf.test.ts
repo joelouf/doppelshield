@@ -1,5 +1,20 @@
 import { describe, it, expect } from 'vitest';
-import { isBlockedAddress, assertSchemeAndPortAllowed } from '../ssrf';
+import {
+    isBlockedAddress,
+    assertSchemeAndPortAllowed,
+    httpAgent,
+    httpsAgent
+} from '../ssrf';
+import { CONFIG } from '../config';
+
+describe('outbound agent socket caps', () => {
+    it('caps sockets per destination host and in total', () => {
+        expect(httpAgent.maxSockets).toBe(CONFIG.maxSockets);
+        expect(httpAgent.maxTotalSockets).toBe(CONFIG.maxSockets);
+        expect(httpsAgent.maxSockets).toBe(CONFIG.maxSockets);
+        expect(httpsAgent.maxTotalSockets).toBe(CONFIG.maxSockets);
+    });
+});
 
 describe('isBlockedAddress: IPv4', () => {
     const blocked: Array<[string, string]> = [

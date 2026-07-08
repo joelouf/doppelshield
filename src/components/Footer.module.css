@@ -21,6 +21,8 @@
 }
 
 .brandCol {
+    --brand-word: 1.25rem;
+    --brand-mark: calc(var(--brand-word) * 1.3333);
     max-width: 380px;
 }
 
@@ -32,49 +34,33 @@
 }
 
 .mark {
-    position: relative;
-    width: 16px;
-    height: 16px;
+    width: var(--brand-mark);
+    height: var(--brand-mark);
     flex-shrink: 0;
-}
-
-.mark::before,
-.mark::after {
-    content: '';
-    position: absolute;
-    width: 11px;
-    height: 11px;
-}
-
-.mark::before {
-    top: 0;
-    left: 0;
-    border-left: 2px solid var(--ds-accent);
-    border-top: 2px solid var(--ds-accent);
-}
-
-.mark::after {
-    bottom: 0;
-    right: 0;
-    border-right: 2px solid var(--ds-accent);
-    border-bottom: 2px solid var(--ds-accent);
-    opacity: 0.5;
+    background-color: var(--ds-accent);
+    -webkit-mask: url(/brand/logo.svg) center / contain no-repeat;
+    mask: url(/brand/logo.svg) center / contain no-repeat;
 }
 
 .word {
     font-family: var(--font-techno);
     font-weight: 700;
     letter-spacing: var(--tracking-wider);
-    font-size: var(--text-sm);
+    font-size: var(--brand-word);
     color: var(--ds-text);
 }
 
+.wordEcho {
+    color: var(--ds-muted);
+}
+
 .tagline {
-    margin: 0;
+    margin: 0 0 0 calc(var(--brand-mark) + var(--space-2));
     font-family: var(--font-mono);
-    font-size: var(--text-sm);
+    font-size: calc(var(--brand-word) * 0.6308);
     line-height: var(--leading-normal);
     color: var(--ds-muted);
+    white-space: nowrap;
 }
 
 .nav {

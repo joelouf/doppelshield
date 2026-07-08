@@ -43,7 +43,5 @@ export default tseslint.config(
             'no-empty': ['error', { allowEmptyCatch: true }]
         }
     },
-    // Must stay last.
-    // Disables ESLint rules that would fight Prettier.
     eslintConfigPrettier
 );

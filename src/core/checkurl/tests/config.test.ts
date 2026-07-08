@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, afterEach } from 'vitest';
 import { CONFIG, defaultMinResponseMs, headerEnv } from '../config';
-import { intEnv, clampInt, coherentDeadline } from '../config';
+import { intEnv, clampInt, coherentDeadline, portsEnv } from '../config';
 import { logger } from '../logger';
 
 describe('CONFIG', () => {
@@ -83,6 +83,92 @@ describe('intEnv operator feedback', () => {
     it('does not warn when no name is supplied even for a bad value', () => {
         const warn = vi.spyOn(logger, 'warn').mockImplementation(() => {});
         expect(intEnv('abc', 5000)).toBe(5000);
+        expect(warn).not.toHaveBeenCalled();
+    });
+});
+
+describe('portsEnv operator feedback', () => {
+    afterEach(() => {
+        vi.restoreAllMocks();
+    });
+
+    it('warns and keeps the valid subset when some entries are invalid', () => {
+        const warn = vi.spyOn(logger, 'warn').mockImplementation(() => {});
+        const ports = portsEnv(
+            '80,abc,443,99999',
+            [80, 443],
+            'CHECKURL_ALLOWED_PORTS'
+        );
+        expect([...ports]).toEqual([80, 443]);
+        expect(warn).toHaveBeenCalledTimes(1);
+        expect(warn.mock.calls[0]![0]).toBe('config_invalid_env');
+        expect(warn.mock.calls[0]![1]).toMatchObject({
+            name: 'CHECKURL_ALLOWED_PORTS',
+            value: '80,abc,443,99999',
+            applied: '80,443'
+        });
+    });
+
+    it('warns and applies the defaults when no entry is valid', () => {
+        const warn = vi.spyOn(logger, 'warn').mockImplementation(() => {});
+        const ports = portsEnv('abc,0', [80, 443], 'CHECKURL_ALLOWED_PORTS');
+        expect([...ports]).toEqual([80, 443]);
+        expect(warn).toHaveBeenCalledTimes(1);
+        expect(warn.mock.calls[0]![1]).toMatchObject({
+            name: 'CHECKURL_ALLOWED_PORTS',
+            value: 'abc,0',
+            applied: '80,443'
+        });
+    });
+
+    it('does not warn for a fully valid list', () => {
+        const warn = vi.spyOn(logger, 'warn').mockImplementation(() => {});
+        const ports = portsEnv(
+            '8080,8443',
+            [80, 443],
+            'CHECKURL_ALLOWED_PORTS'
+        );
+        expect([...ports]).toEqual([8080, 8443]);
+        expect(warn).not.toHaveBeenCalled();
+    });
+
+    it('does not warn when the value is absent', () => {
+        const warn = vi.spyOn(logger, 'warn').mockImplementation(() => {});
+        const ports = portsEnv(undefined, [80, 443], 'CHECKURL_ALLOWED_PORTS');
+        expect([...ports]).toEqual([80, 443]);
+        expect(warn).not.toHaveBeenCalled();
+    });
+
+    it('warns and applies the defaults for a comma-only value', () => {
+        const warn = vi.spyOn(logger, 'warn').mockImplementation(() => {});
+        const ports = portsEnv(',', [80, 443], 'CHECKURL_ALLOWED_PORTS');
+        expect([...ports]).toEqual([80, 443]);
+        expect(warn).toHaveBeenCalledTimes(1);
+        expect(warn.mock.calls[0]![1]).toMatchObject({
+            name: 'CHECKURL_ALLOWED_PORTS',
+            value: ',',
+            applied: '80,443'
+        });
+    });
+
+    it('warns and applies the defaults for a whitespace-only value', () => {
+        const warn = vi.spyOn(logger, 'warn').mockImplementation(() => {});
+        const ports = portsEnv('   ', [80, 443], 'CHECKURL_ALLOWED_PORTS');
+        expect([...ports]).toEqual([80, 443]);
+        expect(warn).toHaveBeenCalledTimes(1);
+    });
+
+    it('tolerates empty segments such as a trailing comma without warning', () => {
+        const warn = vi.spyOn(logger, 'warn').mockImplementation(() => {});
+        const ports = portsEnv('80,443,', [80, 443], 'CHECKURL_ALLOWED_PORTS');
+        expect([...ports]).toEqual([80, 443]);
+        expect(warn).not.toHaveBeenCalled();
+    });
+
+    it('does not warn when no name is supplied even for a bad value', () => {
+        const warn = vi.spyOn(logger, 'warn').mockImplementation(() => {});
+        const ports = portsEnv('abc', [80, 443]);
+        expect([...ports]).toEqual([80, 443]);
         expect(warn).not.toHaveBeenCalled();
     });
 });

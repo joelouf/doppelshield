@@ -1,5 +1,3 @@
-// Confusable-to-ASCII table: Maps each look-alike code point to the ASCII letter it imitates. Consumed by asciiSkeleton to canonicalize hosts for homograph detection.
-
 export const CONFUSABLES: ReadonlyMap<string, string> = new Map([
     ['ͺ', 'i'],
     ['Ϳ', 'j'],

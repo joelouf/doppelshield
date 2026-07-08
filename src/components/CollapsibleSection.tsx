@@ -47,8 +47,6 @@ export function CollapsibleSection({
                 </button>
                 {aside && <span className={s.aside}>{aside}</span>}
             </div>
-            {/* Collapsed body stays mounted for a CSS height transition. */}
-            {/* Inert pulls it out of focus order and the accessibility tree so hidden controls are not tabbable. */}
             <div id={id} className={s.collapsible} inert={!open}>
                 <div className={s.collapsibleInner}>
                     <div className={s.collapsibleBody}>{children}</div>

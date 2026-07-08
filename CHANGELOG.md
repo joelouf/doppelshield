@@ -7,17 +7,92 @@ project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
-<!--
-Add entry under its matching heading, if absent and necessary.
+### Added
 
-In Keep a Changelog order, the full set of change types:
-  ### Added       — New features
-  ### Changed     — Changes to existing behavior
-  ### Deprecated  — Features slated for removal
-  ### Removed     — Features removed
-  ### Fixed       — Bug fixes
-  ### Security    — Vulnerability fixes
--->
+- Terraform definition of the production environment (`infra/`): a single Fargate task
+  in us-east-2 behind an ALB, an AWS WAF rate rule scoped to `POST /api/checkUrl`, a
+  security-group origin lock, CloudWatch alarms on `ssrf_blocked` bursts and ALB
+  health, a cost budget, and a tag-scoped GitHub OIDC role for release mirroring. No
+  IAM task role is attached, so the in-container credentials endpoint has nothing to
+  serve if the SSRF guard were ever bypassed.
+- ADR-0008 recording the AWS topology decision: region choice, the lean subnet layout
+  and its private-subnets upgrade seam, the no-task-role posture, and the
+  digest-identical ECR mirror.
+- A CI job that formats and validates the `infra/` Terraform (`terraform fmt` and
+  `validate`), which the Prettier gate does not cover.
+- A documentation suite under `docs/`: an architecture overview with component,
+  lifecycle, and topology diagrams, an API reference whose examples are captured
+  response transcripts, a configuration reference for every tunable, a threat model
+  mapping controls to source, and a documentation index; plus a root
+  `CONTRIBUTING.md`. The README, SECURITY policy, and changelog link into the suite,
+  and stale README claims (the retired `tini` init, the pre-AWS deployment story, the
+  Cyrillic-and-Greek-only detection scope) were corrected against the shipped code.
+- A Screenshots section in the README with current captures of each verdict
+  outcome (flagged, review, clear, and the uniform SSRF-safe verdict), stored
+  under `docs/screenshots/` and referenced from the architecture doc and
+  documentation index.
+
+### Changed
+
+- The Release workflow mirrors the published image into ECR by digest on version tags
+  when the AWS role variable is configured, and fails if the mirrored digest differs.
+  GHCR remains the source of truth; the build attestation verifies unchanged against
+  the mirror.
+- The deployment runbook describes the AWS edge (ALB and WAF configuration,
+  `x-forwarded-for` as the trusted header, the header-spoof check rewritten for
+  append semantics); Cloudflare guidance moved to the emergency platform switch
+  section.
+- The project license is now the Apache License, Version 2.0, replacing MIT.
+  Apache-2.0 carries an explicit patent grant and defensive-termination clause that
+  MIT omits, and makes the shipped `NOTICE` file the single, idiomatic source of
+  copyright attribution. The package stays `private: true`; DoppelShield is a
+  deployed application, not a published npm package.
+- A sharp-edged shield brand mark now drives the favicon, app icons, banner, and the
+  nav and footer logos, replacing the placeholder corner-bracket mark. It renders in
+  the site's lime accent, locked up consistently with the two-tone `DOPPEL`/`SHIELD`
+  wordmark, and obeys the hard-edged, zero-radius geometry of the rest of the
+  interface.
+- The README banner is now a horizontal lockup, the shield mark to the left of the
+  wordmark, matching the in-app nav and footer. The mark is sized at the same
+  standardized ratio the interface uses (mark box `1.3333` times the wordmark
+  font-size), and the wordmark is set in the real Chakra Petch Bold outlines, so the
+  proportion holds at any display width.
+- The README is restructured to lead with the security posture: the flat feature
+  list is split into a Detection and scope section (with an explicit scope and
+  non-goals note) and a new Security summary, a brief Architecture section surfaces
+  the ports-and-adapters engine, Testing is expanded into Testing and CI, and the
+  stack list moves below the security narrative. Each new section stays a summary
+  that links to the canonical `docs/` suite. The table of contents was rebuilt to
+  match, including the previously missing Data Attribution and Joe Maalouf entries.
+
+### Fixed
+
+- The standalone runtime now binds to all interfaces (`HOSTNAME=0.0.0.0`) so the
+  container healthcheck reaches the app under orchestrators that set `HOSTNAME` to a
+  non-loopback address, such as ECS Fargate's `awsvpc` networking. Previously the
+  probe on `127.0.0.1` could not reach a server bound to the task's own address.
+- The Findings section no longer repeats a row when a scanned URL redirects through more
+  than one host that raises the same homograph or IDN signal. The redirect walk analyzes
+  every hop, so the same signal arrives once per host with differing detail; the API still
+  reports each host's warning, while the report now shows one row per finding type.
+- An invalid `CHECKURL_ALLOWED_PORTS` value now logs the same structured
+  `config_invalid_env` warning the numeric tunables emit, naming the port list
+  actually applied; previously invalid entries were dropped and the `80,443`
+  fallback applied silently.
+
+### Security
+
+- The runtime image now builds on distroless (`gcr.io/distroless/nodejs24-debian12:nonroot`),
+  so the absence of a shell, package manager, and npm is a property of the base image
+  rather than a manual strip, and PID 1 init moves to Fargate's `initProcessEnabled`.
+  The npm-vendored undici finding (CVE-2026-12151) is retired as `not_affected` via a
+  machine-readable OpenVEX statement under `security/vex/`, with the analysis and
+  re-review trigger recorded in ADR-0009.
+- The shared outbound HTTP and HTTPS agents now set `maxTotalSockets` alongside
+  the per-host `maxSockets`, so each agent's socket ceiling holds across all
+  destinations rather than per host only, and a request aborted while queued
+  behind a saturated agent now settles at the walk deadline instead of waiting
+  for a socket to free.
 
 ## [1.1.0] - 2026-07-07
 
