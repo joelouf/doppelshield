@@ -27,35 +27,13 @@
 }
 
 .mark {
-    position: relative;
     display: inline-block;
-    width: 16px;
-    height: 16px;
+    width: 20px;
+    height: 20px;
     flex-shrink: 0;
-}
-
-.markPrimary,
-.markEcho {
-    position: absolute;
-    width: 11px;
-    height: 11px;
-}
-
-.markPrimary {
-    top: 0;
-    left: 0;
-    border: 2px solid var(--ds-accent);
-    border-right: none;
-    border-bottom: none;
-}
-
-.markEcho {
-    bottom: 0;
-    right: 0;
-    border: 2px solid var(--ds-accent);
-    border-left: none;
-    border-top: none;
-    opacity: 0.5;
+    background-color: var(--ds-accent);
+    -webkit-mask: url(/brand/logo.svg) center / contain no-repeat;
+    mask: url(/brand/logo.svg) center / contain no-repeat;
 }
 
 .word {

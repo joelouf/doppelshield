@@ -1,4 +1,5 @@
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, vi } from 'vitest';
+import dns from 'node:dns';
 import {
     createCheckUrlHandler,
     methodNotAllowed,
@@ -278,5 +279,56 @@ describe('createCheckUrlHandler: framework-agnostic contract', () => {
         expect(calls).toBe(1);
         const out = (await res.json()) as CheckResult;
         expect(out.error?.code).toBe('rate_limited');
+    });
+});
+
+type LookupCallback = (
+    err: NodeJS.ErrnoException | null,
+    address: string,
+    family: number
+) => void;
+
+describe('POST /api/checkUrl: 503 deliberately omits name analysis', () => {
+    it('sheds load without warnings, homograph evidence, or a chain', async () => {
+        const handler = createCheckUrlHandler({
+            rateLimiter: { check: () => ({ allowed: true, retryAfterMs: 0 }) }
+        });
+        const pending: LookupCallback[] = [];
+        const lookup = vi.spyOn(dns, 'lookup').mockImplementation(((
+            _hostname: string,
+            _options: unknown,
+            callback: LookupCallback
+        ) => {
+            pending.push(callback);
+        }) as unknown as typeof dns.lookup);
+        const inflight: Array<Promise<Response>> = [];
+        try {
+            for (let i = 0; i < CONFIG.maxConcurrentScans; i++) {
+                inflight.push(
+                    handler(
+                        reqOf(JSON.stringify({ url: 'http://fill.example/' }))
+                    )
+                );
+            }
+            const res = await handler(
+                reqOf(JSON.stringify({ url: 'https://xn--pypl-53dc.com/' }))
+            );
+            expect(res.status).toBe(503);
+            const out = (await res.json()) as CheckResult;
+            expect(out.error?.code).toBe('unavailable');
+            expect(out.warnings).toEqual([]);
+            expect(out.homograph).toBeUndefined();
+            expect(out.redirectChain).toBeUndefined();
+        } finally {
+            await vi.waitFor(() => {
+                expect(pending.length).toBe(CONFIG.maxConcurrentScans);
+            });
+            const released = Object.assign(new Error('released'), {
+                code: 'ENOTFOUND'
+            });
+            for (const callback of pending) callback(released, '', 0);
+            lookup.mockRestore();
+            await Promise.all(inflight);
+        }
     });
 });

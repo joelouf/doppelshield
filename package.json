@@ -3,7 +3,7 @@
   "version": "1.1.0",
   "description": "URL forensics tool that decodes the host, flags look-alike characters, and traces the redirect chain to surface homograph attacks.",
   "private": true,
-  "license": "MIT",
+  "license": "Apache-2.0",
   "author": "Joe Maalouf",
   "homepage": "https://github.com/joelouf/doppelshield#readme",
   "repository": {

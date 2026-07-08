@@ -1,0 +1,4 @@
+bucket  = "doppelshield-tfstate-<account-id>"
+key     = "doppelshield/prod.tfstate"
+region  = "us-east-2"
+encrypt = true

@@ -1,31 +1,26 @@
-# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
-
-# Dependencies.
 /node_modules
 
-# Testing.
 /coverage
 
-# Next.js.
 /.next/
 /out/
 
-# Misc.
 .DS_Store
 *.pem
 
-# Debug.
 npm-debug.log*
 
-# Local env files (never commit real values).
-# .env.example is the tracked template.
 .env
 .env.*
 !.env.example
 
-# Vercel.
 .vercel
 
-# Typescript.
 *.tsbuildinfo
 next-env.d.ts
+
+**/.terraform/
+*.tfstate
+*.tfstate.*
+**/backend.hcl
+**/terraform.tfvars

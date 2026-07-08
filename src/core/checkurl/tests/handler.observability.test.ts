@@ -7,10 +7,45 @@ import {
     afterEach,
     type MockInstance
 } from 'vitest';
+import dns from 'node:dns';
 import { createCheckUrlHandler } from '../handler';
 import { CONFIG } from '../config';
 import { logger } from '../logger';
 import * as timing from '../timing';
+
+type LookupCallback = (
+    err: NodeJS.ErrnoException | null,
+    address: string,
+    family: number
+) => void;
+
+function stallLookups(): {
+    pending: LookupCallback[];
+    release: () => Promise<void>;
+} {
+    const pending: LookupCallback[] = [];
+    const spy = vi.spyOn(dns, 'lookup').mockImplementation(((
+        _hostname: string,
+        _options: unknown,
+        callback: LookupCallback
+    ) => {
+        pending.push(callback);
+    }) as unknown as typeof dns.lookup);
+
+    return {
+        pending,
+        async release() {
+            await vi.waitFor(() => {
+                expect(pending.length).toBe(CONFIG.maxConcurrentScans);
+            });
+            const released = Object.assign(new Error('released'), {
+                code: 'ENOTFOUND'
+            });
+            for (const callback of pending) callback(released, '', 0);
+            spy.mockRestore();
+        }
+    };
+}
 
 function postReq(url: unknown, ip: string): Request {
     return new Request('http://localhost/api/checkUrl', {
@@ -39,25 +74,22 @@ describe('L-7: pre-network bailouts are not a coarse timing oracle', () => {
         const handler = createCheckUrlHandler({
             rateLimiter: { check: () => ({ allowed: true, retryAfterMs: 0 }) }
         });
-        const stall = new Promise(() => {});
-        const slow = vi
-            .spyOn(globalThis, 'fetch')
-            .mockImplementation(() => stall as Promise<Response>);
+        const stalled = stallLookups();
+        const inflight: Array<Promise<Response>> = [];
         try {
-            const inflight: Array<Promise<Response>> = [];
             for (let i = 0; i < CONFIG.maxConcurrentScans; i++) {
                 inflight.push(
-                    handler(postReq('http://example.com/', `fill-${i}`))
+                    handler(postReq('http://fill.example/', `fill-${i}`))
                 );
             }
             const res = await handler(
-                postReq('http://example.com/', 'overflow')
+                postReq('http://fill.example/', 'overflow')
             );
             expect(res.status).toBe(503);
             expect(enforceSpy).toHaveBeenCalled();
-            void inflight;
         } finally {
-            slow.mockRestore();
+            await stalled.release();
+            await Promise.all(inflight);
         }
     });
 
@@ -100,19 +132,16 @@ describe('N-5: abuse and saturation bailouts emit a counted log event', () => {
         const handler = createCheckUrlHandler({
             rateLimiter: { check: () => ({ allowed: true, retryAfterMs: 0 }) }
         });
-        const stall = new Promise(() => {});
-        const slow = vi
-            .spyOn(globalThis, 'fetch')
-            .mockImplementation(() => stall as Promise<Response>);
+        const stalled = stallLookups();
+        const inflight: Array<Promise<Response>> = [];
         try {
-            const inflight: Array<Promise<Response>> = [];
             for (let i = 0; i < CONFIG.maxConcurrentScans; i++) {
                 inflight.push(
-                    handler(postReq('http://example.com/', `fill-${i}`))
+                    handler(postReq('http://fill.example/', `fill-${i}`))
                 );
             }
             const res = await handler(
-                postReq('http://example.com/', 'overflow')
+                postReq('http://fill.example/', 'overflow')
             );
             expect(res.status).toBe(503);
             const event = warnSpy.mock.calls.find(
@@ -120,9 +149,9 @@ describe('N-5: abuse and saturation bailouts emit a counted log event', () => {
             );
             expect(event).toBeDefined();
             expect(typeof event![1]!.count).toBe('number');
-            void inflight;
         } finally {
-            slow.mockRestore();
+            await stalled.release();
+            await Promise.all(inflight);
         }
     });
 });

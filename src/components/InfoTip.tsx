@@ -103,8 +103,6 @@ export function InfoTip({
             >
                 <IconInfo size={12} />
             </button>
-            {/* Portalled to document.body so the popover escapes any clipping or stacking context of the inline trigger. */}
-            {/* Absolute coordinates above keep it anchored. */}
             {open &&
                 coords &&
                 createPortal(

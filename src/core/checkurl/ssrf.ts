@@ -43,8 +43,14 @@ for (const [addr, prefix] of BLOCKED_V4)
 for (const [addr, prefix] of BLOCKED_V6)
     blockList.addSubnet(addr, prefix, 'ipv6');
 
-const httpAgent = new http.Agent({ maxSockets: CONFIG.maxSockets });
-const httpsAgent = new https.Agent({ maxSockets: CONFIG.maxSockets });
+export const httpAgent = new http.Agent({
+    maxSockets: CONFIG.maxSockets,
+    maxTotalSockets: CONFIG.maxSockets
+});
+export const httpsAgent = new https.Agent({
+    maxSockets: CONFIG.maxSockets,
+    maxTotalSockets: CONFIG.maxSockets
+});
 
 export function isBlockedAddress(address: string, family: number): boolean {
     if (typeof address !== 'string' || address.length === 0) return true;
@@ -164,6 +170,17 @@ export async function safeRequest(
     }
 
     return new Promise<SafeResponse>((resolve, reject) => {
+        if (signal?.aborted) {
+            return reject(new Error('Aborted before request'));
+        }
+
+        const onAbort = () => {
+            const err = new Error('Aborted while waiting for a socket');
+            req.destroy(err);
+            reject(err);
+        };
+        const cleanup = () => signal?.removeEventListener('abort', onAbort);
+
         const req = transport.request(
             {
                 method,
@@ -189,13 +206,18 @@ export async function safeRequest(
                 };
 
                 res.destroy();
+                cleanup();
                 resolve(result);
             }
         );
+        signal?.addEventListener('abort', onAbort, { once: true });
         req.setTimeout(timeoutMs, () => {
             req.destroy(new Error('Request timed out'));
         });
-        req.on('error', reject);
+        req.on('error', (err) => {
+            cleanup();
+            reject(err);
+        });
         req.end();
     });
 }

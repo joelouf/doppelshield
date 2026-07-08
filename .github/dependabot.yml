@@ -1,11 +1,6 @@
-# =============================================================================
-# Dependabot Configuration
-# https://docs.github.com/en/code-security/dependabot/dependabot-version-updates
-# =============================================================================
 version: 2
 
 updates:
-  # JavaScript/Node.js (npm, pnpm, yarn auto-detected).
   - package-ecosystem: 'npm'
     directory: '/'
     schedule:
@@ -27,8 +22,6 @@ updates:
           - 'minor'
           - 'patch'
     ignore:
-      # Keep @types/node on the runtime major (Node 24).
-      # Ignore major bumps.
       - dependency-name: '@types/node'
         update-types:
           - 'version-update:semver-major'

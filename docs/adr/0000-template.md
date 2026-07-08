@@ -21,10 +21,3 @@ Be specific about what is now in effect.
 What becomes easier or harder as a result, including the trade-offs accepted
 and any follow-up work this decision creates. List both the positive and the
 negative outcomes.
-
-<!--
-ADRs are immutable and append-only. Once accepted, do not edit a record to
-reflect a later change; write a new ADR that supersedes it, set this record's
-status to "Superseded by [ADR-NNNN]", and link the new record back here.
-Number records sequentially (0001, 0002, ...) and never reuse a number.
--->
