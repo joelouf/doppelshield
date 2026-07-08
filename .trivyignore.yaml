@@ -1,19 +1,19 @@
 vulnerabilities:
   - id: CVE-2026-31789
-    statement: "not_affected: 32-bit-only OpenSSL heap overflow; production runs 64-bit Fargate. Full analysis in security/vex/openssl-libssl3-2026-07.openvex.json."
+    statement: 'not_affected: 32-bit-only OpenSSL heap overflow; production runs 64-bit Fargate. Full analysis in security/vex/openssl-libssl3-2026-07.openvex.json.'
     expired_at: 2026-10-08
   - id: CVE-2026-28387
-    statement: "not_affected: OpenSSL DANE TLSA path not invoked by the Node.js TLS client. See security/vex/openssl-libssl3-2026-07.openvex.json."
+    statement: 'not_affected: OpenSSL DANE TLSA path not invoked by the Node.js TLS client. See security/vex/openssl-libssl3-2026-07.openvex.json.'
     expired_at: 2026-10-08
   - id: CVE-2026-28388
-    statement: "not_affected: OpenSSL CRL/delta path not invoked by the outbound handshake. See security/vex/openssl-libssl3-2026-07.openvex.json."
+    statement: 'not_affected: OpenSSL CRL/delta path not invoked by the outbound handshake. See security/vex/openssl-libssl3-2026-07.openvex.json.'
     expired_at: 2026-10-08
   - id: CVE-2026-28389
-    statement: "not_affected: OpenSSL CMS path not invoked; the application processes no CMS data. See security/vex/openssl-libssl3-2026-07.openvex.json."
+    statement: 'not_affected: OpenSSL CMS path not invoked; the application processes no CMS data. See security/vex/openssl-libssl3-2026-07.openvex.json.'
     expired_at: 2026-10-08
   - id: CVE-2026-28390
-    statement: "not_affected: OpenSSL CMS path not invoked; the application processes no CMS data. See security/vex/openssl-libssl3-2026-07.openvex.json."
+    statement: 'not_affected: OpenSSL CMS path not invoked; the application processes no CMS data. See security/vex/openssl-libssl3-2026-07.openvex.json.'
     expired_at: 2026-10-08
   - id: CVE-2026-45447
-    statement: "not_affected: OpenSSL PKCS7_verify not invoked; the application verifies no PKCS7 structures. See security/vex/openssl-libssl3-2026-07.openvex.json."
+    statement: 'not_affected: OpenSSL PKCS7_verify not invoked; the application verifies no PKCS7 structures. See security/vex/openssl-libssl3-2026-07.openvex.json.'
     expired_at: 2026-10-08
