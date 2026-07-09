@@ -11,7 +11,6 @@
 [![CI](https://github.com/joelouf/doppelshield/actions/workflows/ci.yml/badge.svg)](https://github.com/joelouf/doppelshield/actions/workflows/ci.yml)&ensp;
 [![CodeQL](https://github.com/joelouf/doppelshield/actions/workflows/codeql.yml/badge.svg)](https://github.com/joelouf/doppelshield/actions/workflows/codeql.yml)&ensp;
 [![License: Apache 2.0](https://img.shields.io/badge/license-Apache%202.0-green)](./LICENSE)&ensp;
-<!-- [![Live scanner](https://img.shields.io/badge/live-doppelshield.com-green)](https://doppelshield.com) -->
 
 </section>
 
@@ -249,7 +248,7 @@ The brand-target list is derived from the <a href="https://majestic.com/reports/
 
 <h3 id="joe-maalouf">Joe Maalouf</h3>
 <address style="display: flex; justify-content: flex-start; list-style-type: none;">
-  <a href="https://github.com/joelouf" title="GitHub: @joelouf" target="_blank"><img src="https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white" height="32" alt="github.com/joelouf" /></a>&ensp;<a href="https://linkedin.com/in/joelouf" title="LinkedIn: /in/joelouf" target="_blank"><img src="https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge" height="32" alt="linkedin.com/in/joelouf" /></a>
+  <a href="https://github.com/joelouf" title="GitHub: @joelouf"><img src="https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white" alt="github.com/joelouf" /></a>&ensp;<a href="https://www.npmjs.com/~joelouf" title="npm: ~joelouf"><img src="https://img.shields.io/badge/npm-CB3837?style=for-the-badge&logo=npm&logoColor=white" alt="npmjs.com/~joelouf" /></a>&ensp;<a href="https://linkedin.com/in/joelouf" title="LinkedIn: /in/joelouf"><img src="https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge" alt="linkedin.com/in/joelouf" /></a>
 </address>
 
 <br />
